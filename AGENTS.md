@@ -76,6 +76,47 @@ For non-trivial explanations, use this structure unless another structure is cle
 
 The explanation does not need to be long, but it should be complete enough that the reader can rebuild the idea in their own words.
 
+## Lesson Writing Style
+
+When writing lesson files, make them feel like clear educational notes written by a thoughtful human tutor, not like generic AI output.
+
+Prefer a natural teaching voice. Be concise, but give full explanations. Do not pad the lesson with repetitive framing, obvious transitions, or formulaic phrases.
+
+Avoid robotic lesson phrasing such as:
+
+```text
+By the end of this lesson, you should be able to...
+In this comprehensive guide, we will explore...
+Let's dive into...
+It is important to note that...
+```
+
+Use direct, useful phrasing instead:
+
+```text
+This lesson explains why different market participants trade for different reasons.
+The key idea is that the same buy order can mean different things depending on who sent it.
+```
+
+Lessons should prioritize information, intuition, and examples over template-like structure. Headers should make the topic easier to follow, not make the document feel mechanically generated.
+
+## Lesson Structure
+
+Lesson files should use a simple structure:
+
+1. Start with a single `#` title.
+2. Include a `## Learning Goal` section near the top.
+3. Use whatever middle sections best teach the topic.
+4. End with a `## Recap` section.
+
+The `## Learning Goal` section may use a few bullets when helpful, but it should not read like a generic checklist. Explain the main thing the reader is learning and why it matters.
+
+The middle of the lesson should be divided into clear, topic-specific sections. Choose headers that fit the content. Do not force every lesson into the exact same set of sections if a different structure would teach the topic better.
+
+The `## Recap` section should summarize the most important points in paragraph form. Bullets are acceptable only if they improve clarity, but the default should be complete sentences that connect the ideas.
+
+If a lesson includes exercises or learning checks, place them after the recap. Keep them useful and specific.
+
 ## Examples
 
 Use examples early and often. Prefer small examples with real numbers, concrete objects, or simple code.
@@ -271,6 +312,74 @@ Try to explain:
 - what would make the effect bigger or smaller
 
 Avoid saying only that "flows move markets." Explain the channel through which flows become price pressure.
+
+## Domain Learning Goals
+
+This repo is specifically for building intuition about market microstructure, index mechanics, index flows, rebalancing, and flows trading.
+
+When explaining these topics, focus on desk-relevant intuition. The reader should learn to reason about markets through participants, incentives, constraints, timing, liquidity, and risk transfer.
+
+For market explanations, try to answer:
+
+1. What is the event, mechanism, or trading problem?
+2. Who are the participants?
+3. What does each participant want?
+4. Who is forced to trade, and who is choosing to trade?
+5. What is known in advance, and what is uncertain?
+6. What is the expected flow?
+7. How large is the flow relative to normal liquidity or volume?
+8. Where does liquidity come from?
+9. Who might anticipate the flow?
+10. Why might the price move?
+11. What could make the price effect temporary?
+12. What could make the price effect persistent?
+
+## Building Desk Intuition
+
+Do not only explain definitions. Explain how a trader might reason through the situation.
+
+For any flow, rebalance, or market-impact question, help the reader think through:
+
+- who the forced buyer or seller is
+- whether the flow is predictable
+- when the flow needs to happen
+- how crowded the trade might be
+- who is willing to take the other side
+- whether liquidity is natural or provided by arbitrageurs and dealers
+- what risks are being warehoused
+- how hedging could affect related instruments
+- where slippage could occur
+- what could cause reversal after the event
+
+When possible, separate mechanical flow from information. A price can move because traders learn something new, but it can also move because a large buyer or seller needs liquidity. Make clear which mechanism is being discussed.
+
+## Index Rebalance Explanations
+
+When explaining an index rebalance, walk through the timeline.
+
+A useful default structure is:
+
+1. The index methodology defines the rules.
+2. An announcement or estimation period reveals likely changes.
+3. Traders estimate additions, deletions, weight changes, and required shares.
+4. Passive funds and benchmarked managers prepare to trade.
+5. Liquidity providers, dealers, and arbitrageurs position around expected demand.
+6. Execution often concentrates near the close or auction.
+7. After the rebalance, temporary pressure may reverse, normalize, or persist depending on liquidity and positioning.
+
+Always distinguish between:
+
+- mechanical demand from index trackers
+- anticipatory trading before the rebalance
+- liquidity provision during execution
+- hedging in related instruments
+- fundamental information about the company
+- temporary price pressure
+- lasting repricing
+
+For index mechanics, explain the actual calculation when relevant. Include details such as shares outstanding, free float, float adjustment, investable market capitalization, index weights, divisors, adds, deletes, corporate actions, and implementation timing.
+
+For microstructure, explain the trading venue and execution mechanism when relevant. Include details such as order books, market orders, limit orders, spreads, depth, auctions, adverse selection, inventory risk, market impact, and liquidity fragmentation.
 
 ## Uncertainty and Precision
 

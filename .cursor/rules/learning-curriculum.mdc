@@ -1,0 +1,23 @@
+---
+description: Always use the repository learning curriculum and teaching guide
+alwaysApply: true
+---
+
+# Learning Curriculum Context
+
+When answering learning questions or creating lesson content in this repository, consult `AGENTS.md` and `CURRICULUM.md`.
+
+Use `AGENTS.md` for teaching style:
+
+- explain from first principles
+- use the Feynman method
+- define jargon plainly
+- prefer concrete examples
+- build durable intuition
+- include misconceptions, tradeoffs, and learning checks
+
+Use `CURRICULUM.md` for lesson order, scope, and progression.
+
+Create lessons one at a time unless the user explicitly asks for multiple lessons. For lesson generation, do not skip ahead or create later lessons unless requested.
+
+When writing market microstructure, index mechanics, index flows, rebalance, or flows-trading content, connect the explanation back to participants, incentives, timing, liquidity, risk transfer, and price impact.
