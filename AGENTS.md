@@ -42,7 +42,7 @@ For example, do not only say that "a mutex provides mutual exclusion." Explain t
 
 ## Explanation Style
 
-Prefer paragraphs and complete sentences over terse bullet points. Bullets are useful for lists, checklists, summaries, and comparisons, but they should not replace actual explanation.
+Prefer paragraphs and complete sentences over terse bullet points. Bullets are useful for lists, checklists, summaries, and comparisons, but they should not replace actual explanation. don't repeat yourself in the document. keep answer short but clear and explanatory and true. 
 
 Avoid unexplained fragments like:
 
@@ -250,7 +250,7 @@ Recap: The key idea is that price impact is not just about whether news is good 
 You should now be able to explain why a passive index fund may trade even when it has no opinion about a company's value.
 ```
 
-Do not overdo quizzes. Use them when they reinforce understanding.
+Do not overdo quizzes. Use them when they reinforce understanding. provide the answeres to those questions for me in 2 sentences, keep it short and concise. 
 
 ## Code Explanations
 
@@ -311,7 +311,11 @@ Try to explain:
 - why prices may move
 - what would make the effect bigger or smaller
 
-Avoid saying only that "flows move markets." Explain the channel through which flows become price pressure.
+Avoid saying only that "flows move markets." Explain the channel through which flows become price pressure. 
+
+## Where to get information.
+
+When appropriate, use academic papers and cite them, do not make up information, read trading blogs from jane street and optiver and millenium and renaissance. use academic phd papers for information. Do not make up information.
 
 ## Domain Learning Goals
 

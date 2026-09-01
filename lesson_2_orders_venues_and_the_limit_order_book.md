@@ -2,83 +2,56 @@
 
 ## Learning Goal
 
-This lesson explains how a desire to buy or sell becomes an actual trade.
+Lesson 1 asked who is trading and why. This lesson asks how that intention becomes an executable trade.
 
-Lesson 1 focused on the people and institutions behind market flow. This lesson moves one level closer to the machinery of the market: orders, prices, venues, and the limit order book. The key idea is that "the price" is not a single thing when you are trading size. There is a last traded price, a best bid, a best ask, visible depth, hidden liquidity, and the price you can actually execute for the amount you need.
+The key idea is that "the price" is not one number when size matters. There is a last trade, a best bid, a best ask, visible depth, liquidity you cannot see, and the average price you actually get for the shares you need. On a flows desk, those distinctions decide whether a required buy looks cheap, expensive, noisy, or crowded.
 
-That distinction matters constantly on a flows desk. A client may want to buy 2 million shares, but the market may only show a few thousand shares available near the current price. The desk has to think about size, urgency, venue choice, information leakage, and market impact.
+## The Problem the Order Book Solves
 
-## The Basic Problem
+Buyers and sellers do not all want the same thing at the same moment. Some need to trade now. Some will trade only at a price they like. The market needs a way to store those intentions and match them when they cross.
 
-Markets need a way to organize buyers and sellers.
-
-Some buyers want to trade immediately. Some buyers only want to buy if the price is low enough. Some sellers want to sell immediately. Some sellers only want to sell if the price is high enough.
-
-The limit order book is one mechanism for organizing those intentions.
+A limit order book is that matching machine for a lit venue. It is not a valuation model. It does not say what a company is worth. It shows currently available trading interest under the venue's rules.
 
 ```text
-buyers willing to pay certain prices
-   |
-   v
-bids in the order book
-
-sellers willing to accept certain prices
-   |
-   v
-offers in the order book
-
-incoming orders
-   |
-   v
-match against available bids or offers
+willing buyers post bids
+willing sellers post offers
+incoming orders match against resting interest
+trades print
+unmatched interest stays in the book
 ```
-
-The order book is not a valuation model. It does not tell you what a company is worth. It shows currently available trading interest under the rules of a venue.
 
 ## Market Orders and Limit Orders
 
-A market order says: trade now at the best available prices.
+A market order says: trade now at the best available prices. A limit order says: trade only at this price or better.
 
-A limit order says: trade only at this price or better.
+Market orders buy certainty of execution and give up price control. Limit orders keep price control and risk not getting filled. A fund that must finish a rebalance by the close may care more about completion. A patient discretionary buyer may care more about price.
 
-That is the basic tradeoff. Market orders prioritize execution certainty. Limit orders prioritize price control.
-
-If you send a market buy order, you are demanding liquidity from sellers. You will trade against the lowest available offers first. If your order is larger than the shares available at the best offer, it will continue into higher prices.
-
-If you place a buy limit order, you are saying the maximum price you are willing to pay. You may get a better price, but you may not get filled.
+If you send a market buy, you demand liquidity. You buy from the lowest available offers first. If your size is larger than the shares at the best ask, the order continues into worse prices. If you post a buy limit, you supply liquidity at your chosen price and wait for a seller to hit you.
 
 ```text
 market order
-  -> more certainty of execution
-  -> less control over final price
+  -> demand liquidity now
+  -> uncertain average price if size is large
 
 limit order
-  -> more control over price
-  -> less certainty of execution
+  -> choose a price or better
+  -> uncertain fill
 ```
-
-This tradeoff is everywhere in execution. A fund that must complete a rebalance by the close may care more about completion. A patient investor may care more about price.
 
 ## Bid, Ask, and Spread
 
-The bid is the best displayed price where someone is willing to buy.
+The bid is the best displayed price where someone is willing to buy. The ask, also called the offer, is the best displayed price where someone is willing to sell. The bid-ask spread is the gap between them.
 
-The ask, also called the offer, is the best displayed price where someone is willing to sell.
+If the best bid is $99.98 and the best ask is $100.02, the spread is $0.04. An urgent seller usually hits the bid. An urgent buyer usually lifts the ask. The spread is compensation for immediacy: the liquidity provider stands ready to trade and takes inventory risk until that position is unwound or hedged.
 
-The bid-ask spread is the difference between them.
+## A Simple Order Book Walk
 
-If the best bid is $99.98 and the best ask is $100.02, the spread is $0.04. A trader who wants to sell immediately usually hits the bid. A trader who wants to buy immediately usually lifts the offer.
-
-The spread is partly the cost of immediacy. If you demand liquidity right now, you usually pay for that convenience. The liquidity provider earns the spread as compensation for standing ready to trade and for taking inventory risk.
-
-## A Simple Order Book
-
-Suppose stock XYZ has this simplified order book:
+Suppose XYZ has this simplified book:
 
 ```text
 SELLERS / OFFERS
 
-price       shares offered
+price       shares
 $100.05     1,500
 $100.04     1,000
 $100.03       800
@@ -94,178 +67,172 @@ $99.95      3,000
 BUYERS / BIDS
 ```
 
-The best bid is $99.98. The best ask is $100.02. The spread is $0.04.
+A market buy of 300 shares fills entirely at $100.02, because 500 shares are offered there.
 
-If you send a market order to buy 300 shares, you can buy all 300 at $100.02 because there are 500 shares offered there.
-
-If you send a market order to buy 1,000 shares, the trade is different. You buy 500 shares at $100.02, then you still need 500 more. The next offer is $100.03, so you buy 500 shares there.
-
-Your fill is:
+A market buy of 1,000 shares is different:
 
 ```text
 500 shares at $100.02
 500 shares at $100.03
+average price = $100.025
 ```
 
-Your average price is:
-
-```text
-((500 * 100.02) + (500 * 100.03)) / 1000 = $100.025
-```
-
-The best ask was $100.02, but your average execution price was $100.025 because your order was larger than the shares available at the best ask.
-
-This is the beginning of market impact. Your own order consumes liquidity and pushes your execution into worse prices.
+The best ask was $100.02, but the executable average for 1,000 shares was worse because the order walked the book. That is the start of market impact: your own size consumes nearby liquidity and pushes fills into less attractive prices. Lesson 3 develops impact more fully. The point here is simpler: quoted top-of-book price is not the same as executable price for size.
 
 ## Last Price Is Not Executable Price
 
-The last traded price tells you where the most recent trade occurred. It does not tell you how much you can trade there now.
+The last traded price is where a previous trade happened. It does not tell you how much you can trade there now.
 
-If the last trade in XYZ was at $100.00, that does not mean you can buy 1 million shares at $100.00. The current ask might be $100.02, with only 500 shares displayed. The next 999,500 shares may require higher prices, hidden liquidity, a broker search, or patient execution over time.
-
-This distinction is basic but important. Charts show historical prints. Traders need executable liquidity.
+If XYZ last traded at $100.00, that does not mean you can buy 1 million shares at $100.00. The current ask might show only 500 shares at $100.02. The rest may require walking the book, finding hidden or dark liquidity, calling a dealer, or working the order over time.
 
 ```text
-last price
-  -> where a previous trade happened
-
-best bid and ask
-  -> where the next small trade may happen
-
-depth
-  -> how much is available at nearby prices
-
-execution price
-  -> what you actually get for your size and urgency
+last price        -> historical print
+best bid / ask    -> next small trade may happen here
+depth             -> how much is shown nearby
+execution price   -> what your size and urgency actually get
 ```
 
-For small trades, these may be close together. For large flows, they can be very different.
+For tiny trades these can be close. For index and basket flow they often are not.
 
-## Depth and Displayed Liquidity
+## Depth, Displayed Liquidity, and Hidden Liquidity
 
-Depth means the number of shares available at different price levels.
+Depth is how many shares sit at each price level. More depth near the touch usually means a given order can finish with less price movement. Less depth means the same order walks farther.
 
-The best ask might show 500 shares. The next ask might show 800 shares. A few cents higher, there may be several thousand shares. The deeper you go into the book, the more size may be available, but usually at worse prices.
-
-Displayed liquidity is the liquidity visible in the public order book. It is useful because it shows some immediate supply and demand, but it is incomplete.
-
-Some liquidity is hidden. Some sits in dark pools. Some belongs to participants who are willing to trade but do not want to display their full size. Some appears only after price moves enough to attract new sellers or buyers.
-
-A useful mental model is:
+Displayed liquidity is what the public book shows. It is useful and incomplete. Some orders are hidden or only partially displayed on lit venues. Some interest sits in dark pools. Some liquidity is latent: it appears only after price moves enough to attract new buyers or sellers, or after a broker finds a willing counterparty.
 
 ```text
-displayed liquidity
-  -> visible now
-
-hidden liquidity
-  -> available but not fully shown
-
-latent liquidity
-  -> may appear if the price becomes attractive
+displayed  -> visible now in the public book
+hidden     -> resting interest not fully shown
+latent     -> may appear if price, venue, or search changes
 ```
 
-For a flows desk, this means the order book is a starting point, not the whole map.
+A flows desk should treat the book as a starting map, not the whole territory.
 
 ## Queue Priority
 
-At a given price, there may be many orders waiting.
-
-Suppose three traders place buy limit orders at $100.00:
+At one price, many orders may be waiting. Most lit U.S. equity markets use price-time priority: better prices go first, and at the same price earlier orders usually go first.
 
 ```text
-Trader A: buy 1,000 shares at $100.00, submitted first
-Trader B: buy 1,000 shares at $100.00, submitted second
-Trader C: buy 1,000 shares at $100.00, submitted third
+Trader A: buy 1,000 at $100.00, first in time
+Trader B: buy 1,000 at $100.00, second
+Trader C: buy 1,000 at $100.00, third
 ```
 
-If a seller sells 1,500 shares at $100.00, Trader A gets filled first. Trader B gets the remaining 500 shares. Trader C gets nothing.
+If a seller sells 1,500 shares at $100.00, A gets 1,000, B gets 500, and C gets nothing. Being at the right price is not enough. You also need enough opposite-side flow to reach your place in the queue. That is one reason patient limit orders can miss fills even when the print eventually trades through your price on another venue or later in the day.
 
-That is queue priority. Many markets use price-time priority: better prices go first, and within the same price, earlier orders usually go first.
+## Lit Exchanges, Dark Pools, ATSs, and Off-Exchange Trading
 
-Queue priority matters because placing a limit order at the right price does not guarantee a fill. You also need enough incoming opposite-side flow to reach your place in the queue.
+Not all trading happens in one place.
 
-## Lit Venues, Dark Pools, and Off-Exchange Trading
+A lit exchange displays bids and offers publicly in a central limit order book. That pre-trade transparency helps price discovery: other participants can see where displayed interest sits.
 
-Not all trading happens in the same place.
+A dark pool is an alternative trading system (ATS) that matches orders without showing a public book the way a lit exchange does. Under U.S. Regulation ATS, many dark venues register as broker-dealers and do not disseminate quotes to the public. Trades still report to the consolidated tape after execution, often through a FINRA Trade Reporting Facility, but without the same pre-trade display. Large traders use dark venues partly to reduce information leakage: posting a huge bid on a lit book can advertise demand and move price before the trade is done.
 
-A lit exchange displays bids and offers publicly. Lit markets help price discovery because participants can see displayed supply and demand.
-
-A dark pool matches buyers and sellers without displaying the same kind of public order book. Dark pools can help large traders reduce information leakage. If a large buyer reveals its full demand in the lit market, other traders may react and push the price higher.
-
-Off-exchange trading includes dark pools, broker internalization, single-dealer platforms, and other non-exchange venues. These venues can provide useful liquidity, but they come with tradeoffs: uncertain fill probability, less visible liquidity, different matching rules, and possible adverse selection.
-
-Venue choice is not a minor operational detail. It affects how much information the order reveals, how quickly it fills, what price it receives, and how much market impact it creates.
-
-## Why Venue Choice Matters for Flows
-
-Imagine a fund needs to buy a large basket before a rebalance close.
-
-If the fund displays too much interest too early, other traders may infer the flow and move prices. If it waits too long, it may face a crowded closing auction. If it uses dark pools, it may reduce information leakage but may not find enough liquidity. If it uses market orders aggressively, it may complete the trade but pay more impact.
-
-The execution problem is a balance:
+Off-exchange trading is broader than dark pools. It includes dark ATSs, broker internalization, wholesaler execution, and other non-exchange matching. Optiver-style wholesale or direct-counterparty trades sit in this broader family: size can be negotiated away from the public book, then reported after the fact. The tradeoff is the same shape every time. You may reduce leakage and find block size, but you give up some certainty about whether liquidity is there, and you may face adverse selection if the other side is better informed.
 
 ```text
-complete the trade
-  -> avoid too much price impact
-  -> avoid revealing too much information
-  -> manage benchmark risk
-  -> find enough liquidity
+lit exchange
+  -> public book, clearer displayed depth, more leakage risk for large size
+
+dark pool / non-display ATS
+  -> less pre-trade visibility, possible block matching, uncertain fill
+
+other off-exchange
+  -> internalization, RFQ, bilateral liquidity; post-trade print, not a public queue
 ```
 
-That balance changes depending on whether the trade is discretionary, benchmark-sensitive, or forced.
+Venue choice is part of the trade, not an afterthought. It changes what information you reveal, how likely you are to finish, what price you get, and how much the rest of the market can see coming.
 
-## Connection to Index and Rebalance Trading
+## Why This Matters for Index and Rebalance Flow
 
-Index rebalances often create trades with size and timing constraints.
+Index and rebalance trades often combine three hard constraints: large size, known direction, and a deadline tied to a closing benchmark.
 
-If a stock is added to an index, passive funds may need to buy it by the effective date. If those funds care about tracking the closing benchmark, much of the flow may concentrate near the close or in the closing auction.
-
-The order book and venue structure determine how that demand meets supply. Displayed liquidity may absorb only a small part of the flow. Hidden liquidity, dealers, arbitrageurs, market makers, and auctions may absorb the rest.
-
-The practical chain looks like this:
+If a stock is added to an index, passive funds may need to buy by the effective close. Displayed book depth may cover only a fraction of that demand. The rest has to come from hidden interest, dark or bilateral liquidity, dealers warehousing risk, or the closing auction. If the fund shows too much too early on lit venues, other traders can lean ahead of the flow. If it hides too much and waits too long, completion risk rises into the close.
 
 ```text
-index rule creates required trade
-   |
-   v
-fund or desk chooses execution strategy
-   |
-   v
-orders interact with venues and liquidity
-   |
-   v
-market makers and other traders adjust
-   |
-   v
-execution price and market impact emerge
+required index trade
+  -> execution choice: lit / dark / bilateral / auction
+  -> orders interact with depth and queues
+  -> liquidity providers adjust quotes and inventory
+  -> average price and residual risk emerge
 ```
 
-This is why market microstructure matters for index mechanics. Knowing that a fund needs to buy is only the first step. The next question is how that buying actually gets done.
+Knowing that mechanical demand exists is only step one. Microstructure is how that demand meets supply.
 
 ## Common Misconceptions
 
-It is easy to think the stock price is one number. For a tiny trade, that shortcut may be fine. For a large trade, price depends on size, urgency, venue, and available liquidity. The last price on a chart is not the same as the price for a large executable order.
+The stock price is not one number for a large order. Last price, top of book, and your executable average can diverge quickly once size exceeds nearby depth.
 
-Another common mistake is assuming a market order fills entirely at the best bid or ask. It only does that if enough shares are available at that price. A larger order walks the book and receives multiple prices.
+A market order does not always fill entirely at the best bid or ask. It only does that if enough size is there. Larger orders walk the book.
 
-Displayed liquidity is also not the same as total liquidity. The public book shows what participants are willing to reveal. Hidden, dark, and latent liquidity may exist, but accessing it depends on venue choice and execution strategy.
+Displayed liquidity is not total liquidity. Hidden, dark, and latent interest can matter, but they are not guaranteed and are not free of adverse selection.
 
-Finally, dark pools are not automatically better. They may reduce information leakage, but they do not guarantee fills or superior prices. A trader still has to think about adverse selection, urgency, and opportunity cost.
+Dark pools are not automatically better. They can reduce leakage and help source size, but they do not guarantee a fill or a better price.
+
+## Recap
+
+Orders turn a motive into a claim on liquidity. Market orders demand immediacy; limit orders post price conditions and wait. The lit book stores bids and offers, the spread prices immediacy, and depth tells you how far a given size must walk. Queue priority decides who gets served first at a price. Venues matter because lit, dark, and other off-exchange mechanisms reveal different amounts of information and offer different fill certainty. For flows trading, especially index and rebalance flow, the practical question is never only "what is the price?" It is "what can I actually execute, where, by when, and what will that reveal?"
+
+## New Terms
+
+**market order**: An order to trade immediately at the best available prices.
+
+**limit order**: An order to trade only at a stated price or better.
+
+**bid**: The best displayed price at which someone is willing to buy.
+
+**ask / offer**: The best displayed price at which someone is willing to sell.
+
+**bid-ask spread**: The difference between the best ask and the best bid. It is part of the cost of trading immediately.
+
+**limit order book**: The venue's schedule of resting buy and sell limit orders, ranked by price and usually by time within each price.
+
+**depth**: How many shares are available at each price level in the book.
+
+**displayed liquidity**: Trading interest visible in the public order book.
+
+**hidden liquidity**: Resting interest that is available to trade but not fully shown publicly.
+
+**latent liquidity**: Potential trading interest that may appear if price, search, or venue conditions change.
+
+**queue priority / price-time priority**: The rule that better-priced orders trade first, and earlier orders at the same price usually trade before later ones.
+
+**lit exchange**: A venue that publicly displays bids and offers in a central limit order book.
+
+**dark pool**: An ATS that matches orders without a public pre-trade book like a lit exchange. Trades still report after execution.
+
+**alternative trading system (ATS)**: A non-exchange trading venue regulated under rules such as Regulation ATS. Dark pools are usually non-display ATSs.
+
+**off-exchange trading**: Trading away from registered exchanges, including dark ATSs, internalization, and bilateral or wholesale liquidity.
+
+**walking the book**: Consuming multiple price levels with one aggressive order because size exceeds depth at the best price.
 
 ## Questions to Test Yourself
 
 1. What is the difference between a market order and a limit order?
+
+A market order demands immediate execution at whatever prices are available. A limit order sets a price condition and may not fill.
+
 2. Why does the bid-ask spread exist?
-3. Why can a 1,000-share market buy order receive a worse average price than the best ask?
+
+Urgent traders pay for immediacy. Liquidity providers earn the spread as compensation for standing ready to trade and taking inventory risk.
+
+3. Why can a 1,000-share market buy receive a worse average price than the best ask?
+
+If fewer than 1,000 shares are offered at the best ask, the order buys the rest at worse prices. The average fill is then above the top-of-book ask.
+
 4. What is the difference between displayed, hidden, and latent liquidity?
+
+Displayed liquidity is shown in the public book. Hidden liquidity is resting but not fully shown. Latent liquidity may appear only after price, venue, or search conditions change.
+
 5. Why might a trader use a dark pool instead of a lit exchange?
+
+To reduce pre-trade information leakage on large size and to search for a match without advertising full demand on a public book. The cost is less certainty about fill and displayed depth.
+
 6. Why does queue priority matter?
-7. Why do index and rebalance trades often care about the closing auction?
 
-## Recap
+Being at the right price does not guarantee a fill if other orders arrived earlier at that price. You need enough opposite-side flow to reach your place in line.
 
-The limit order book organizes visible buying and selling interest. Bids show where buyers are willing to buy, offers show where sellers are willing to sell, and the spread is the gap between the best two prices. A market order demands liquidity immediately, while a limit order supplies liquidity at a chosen price but may not get filled.
+7. Why do index and rebalance trades care about venue and the close?
 
-For small trades, the quoted price may be close to the execution price. For large flows, the difference can be meaningful. Size can consume multiple price levels, displayed liquidity may understate or overstate true trading interest, and venue choice can change both information leakage and fill quality.
-
-This lesson connects directly to flows trading because every index rebalance, ETF basket trade, hedge, or client portfolio trade eventually becomes orders interacting with liquidity. The desk's job is not just to know that flow exists. It is to understand how that flow will reach the market, where liquidity may come from, and how execution choices can change the final price.
+They often combine large size, known direction, and a closing-price benchmark. Venue choice affects leakage and fill quality, and much benchmark-sensitive flow concentrates near the closing auction.
