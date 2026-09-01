@@ -107,7 +107,7 @@ Lesson files should use a simple structure:
 1. Start with a single `#` title.
 2. Include a `## Learning Goal` section near the top.
 3. Use whatever middle sections best teach the topic.
-4. End with a `## Recap` section.
+4. End with a `## Recap` section and a `## New Terms` section with definitions.
 
 The `## Learning Goal` section may use a few bullets when helpful, but it should not read like a generic checklist. Explain the main thing the reader is learning and why it matters.
 
