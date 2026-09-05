@@ -313,9 +313,9 @@ Try to explain:
 
 Avoid saying only that "flows move markets." Explain the channel through which flows become price pressure. 
 
-## Where to get information.
+## Where to get information
 
-When appropriate, use academic papers and cite them, do not make up information, read trading blogs from jane street and optiver and millenium and renaissance. use academic phd papers for information. Do not make up information.
+Read `SOURCES.md` when researching or writing. Search those sites, cite the specific post or paper, and do not invent facts.
 
 ## Domain Learning Goals
 

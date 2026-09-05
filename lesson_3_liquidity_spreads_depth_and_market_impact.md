@@ -46,7 +46,7 @@ All three matter for meta-orders, meaning large parent orders broken into many c
 
 ## A Small Worked Example
 
-XYZ trades near $100. ADV is 10,000,000 shares. A fund must buy 2,000,000 shares. That is 20% of ADV if done in one day.
+XYZ trades near $100. ADV, meaning average daily volume, is 10,000,000 shares: a typical day's traded share count, used as a rough liquidity screen. A fund must buy 2,000,000 shares. That is 20% of ADV if done in one day.
 
 If the fund tries to buy too fast, it becomes a large share of what the market is naturally trading. Liquidity providers see persistent buy pressure, pull offers, or lean ahead. The fund's average buy price may rise from $100 toward $101 or further, depending on conditions. If instead the fund stretches the trade over several days, each day's participation is smaller, impact per day may fall, but the fund takes more price risk while unfinished and may miss a benchmark deadline.
 
@@ -109,6 +109,12 @@ That 40 cents mixes spread crossing, impact, timing, and adverse drift. The labe
 ## Nonlinear Impact and Simple Scaling
 
 Empirically, impact often rises less than one-for-one with size. A common regularity, sometimes called the square-root law, says that the average impact of a meta-order scales roughly like the square root of size relative to volume, scaled by volatility. Work associated with Bouchaud and others, and practitioner notes from firms such as CFM, treat this as an empirical pattern in normal conditions, not a physical constant.
+
+That is a different point from "same shares, different speed." Taking 1,000 shares of displayed liquidity right now means walking the book. If only 300 shares sit at $100.02, then 400 at $100.03, then 300 at $100.05, your average is already above the touch, and you have emptied nearby depth. Working the same 1,000 shares over an hour as a meta-order — 100-share slices, some dark pings, some limit posts — usually costs less in impact because the book can refill between slices. You still have 1,000 shares of risk to transfer. You did not take 1,000 shares of *current* depth in one hit.
+
+The square-root pattern is about comparing *sizes*, both worked the same way. Stylized: if 1,000 shares worked over the day costs about 10 basis points of impact, four times the size (4,000 shares) is not four times the cost. Square-root scaling would put it nearer 20 basis points, twice as much, not 40. That is square root, not log: log would be flatter still (nearer 12 basis points in this toy). A static book with equal depth on every tick would make 4× size cost about 4×. Perfect refill at the *same* price would make 4× size cost about the same. Markets sit between those. Same-price refill is the speed story above. The size story is a different refill: as the larger order pushes price, new sellers appear at worse prices, so the supply curve thickens. Extra size still costs more. It just does not cost linearly. Do not treat those numbers as a forecast.
+
+Why a large order does not slip linearly: the displayed book is not the whole supply curve. Linear thinking assumes every tick has the same size, so four times the shares must walk four times as many ticks and the average fill is four times worse. That would be true if you were eating a frozen ladder. You are not. The first 1,000 shares take the cheap, nearby liquidity. The next 3,000 still push the price up, but each uptick recruits sellers who would not sell at $100.02 and who show up at $100.08 or $100.10: people who were waiting, hidden size, opportunistic offers. You need a higher price to clear 4,000 shares. You do not need four times the price move, because the ladder gets thicker as it rises. Slip of the parent order is an average across all those fills, so it rises with size, just much slower than one-for-one.
 
 The practical implication is more important than the exact exponent. Doubling size does not simply double cost in a linear way, and tiny participation can look almost linear while larger participation becomes clearly costly. Comparing shares to ADV is a first screen. Thinking in participation rate and volatility is a better second screen. Full cost models belong later in the curriculum.
 

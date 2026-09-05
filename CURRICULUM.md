@@ -17,7 +17,7 @@ timing, predictability, execution cost, and price effect of that flow?
 
 ## Source of information
 
-Please write using sources that are high quality or from academic sources that are grounded in truth or studies. Follow Jane st blogs or Optiver or DRW. Read trading firms. Or millenium capital's flows desk. Find real information. We want to learn real things here. Find high quality sources from real trading desks or academic papers or high quality books. Nothing speculative or not real. But high quality information. Site if you need. 
+Use `SOURCES.md` as the search allowlist. Cite the specific post, paper, or primary doc. Do not invent sources. 
 
 ## How to Use This Curriculum
 

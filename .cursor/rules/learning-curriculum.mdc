@@ -16,7 +16,7 @@ Use `AGENTS.md` for teaching style:
 - build durable intuition
 - include misconceptions, tradeoffs, and learning checks
 
-Use `CURRICULUM.md` for lesson order, scope, and progression.
+Use `CURRICULUM.md` for lesson order, scope, and progression. Use `SOURCES.md` when researching or citing blogs and papers.
 
 Create lessons one at a time unless the user explicitly asks for multiple lessons. For lesson generation, do not skip ahead or create later lessons unless requested.
 
