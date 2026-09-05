@@ -127,6 +127,24 @@ A lit exchange shows bids and offers publicly. Everyone can see the displayed bo
 
 A dark pool is a private matching venue. Orders are not shown on a public book the way they are on an exchange. If a buyer and a seller both happen to be there, they can match, often near the middle of the bid-ask spread. If nobody is on the other side, you wait. Trades still print on the public tape after they happen.
 
+Dark pools exist so large traders can search for a match without advertising size on the lit book. They are not a special hedge-fund-only playground, and they are not how a fund "trades itself" instead of using a broker. Most hedge-fund flow still goes to a broker or EMS; the broker's smart order router may rest or ping dark pools, or a large fund may send child orders there directly after becoming a subscriber. Retail usually cannot subscribe. FINRA lists the venues. Common names include Liquidnet, UBS ATS, JPM-X, Goldman Sigma X2, Morgan Stanley MS Pool, Virtu POSIT, Instinet BlockCross, IntelligentCross, and BIDS. JPM-X's Form ATS-N says subscribers must be JPMorgan institutional clients or broker-dealers.
+
+The usual benefit is price improvement versus crossing the spread, plus less pre-trade leakage. If the lit market is $99.98 bid / $100.02 ask, an urgent buy that lifts the offer pays $100.02. A midpoint dark fill is $100.00. Some pools can also match inside the spread at $99.99. That is still the same idea: you paid less than the ask. It is not a special dark-pool discount below fair value. You captured some of the spread instead of giving it all to the displayed seller. If you fill at the ask, you got no improvement. Fill is uncertain. The other side can still be informed.
+
+You cannot see dark liquidity the way you see a lit book. There is no public bid size. Desks infer it. Brokers send small immediate-or-cancel pings; a fill hints someone was there. Some venues use indications of interest or conditional orders: a non-firm "I might have size," then a firm-up if a contra appears. Those methods leak a little information and can be gamed, which is why some pools restrict tiny IOC pings.
+
+An ISO sweep is a lit-market tool, not a dark-pool tool. Under Reg NMS Rule 611, an intermarket sweep order lets a router hit one exchange immediately while also sending orders to clear better protected quotes on other exchanges. Dark pools do not display protected quotations, so you do not ISO-sweep them.
+
+A common sequence for a marketable buy that is not desperate is: ping dark pools first for a midpoint or inside-spread fill, then ISO-sweep displayed size on NYSE, Nasdaq, and the other lit venues if shares remain. Barclays' published U.S. algo FAQ describes that shape as Ping (hidden liquidity at or inside the spread), then Sweep. It is not a law. Urgent flow may skip dark and go straight to the lit book. Some exchange routers hit their own book first. Patient algos may rest in the dark instead of sweeping at all.
+
+A FIX link is the private pipe that carries those orders. FIX, the Financial Information eXchange protocol, is the industry message format. A simplified New Order Single looks like this:
+
+```text
+8=FIX.4.2|35=D|11=ORD123|55=XYZ|54=1|38=10000|40=2|44=100.00|
+```
+
+`35=D` means new order. `55=XYZ` is the stock. `54=1` is buy. `38=10000` is size. `40=2` is a limit. `44=100.00` is the limit price. Real messages add sender, target, timestamps, and a checksum. JPM-X's materials describe direct access as FIX 4.2. FIX is the language. It is not a venue.
+
 ### What "off-exchange" means
 
 Off-exchange simply means the trade was not matched on a registered exchange's public book. Dark pools are one off-exchange path. There are others. The important split is:
@@ -134,7 +152,7 @@ Off-exchange simply means the trade was not matched on a registered exchange's p
 - **matching venues**, where you hope another order is already there
 - **principal venues**, where a firm takes the other side with its own capital
 
-Optiver is an example of a principal liquidity provider: a market-making firm that quotes prices and takes inventory risk. Jane Street is another. A bank trading desk can play a similar role. They are not the exchange, and they are not your retail brokerage app.
+A firm like Optiver can do both, because market making is a business of taking the other side, not a single venue. On a lit exchange, it posts bids and offers in the public book. Separately, it can take a block or a streamed DCP trade as principal: the client sells to Optiver, Optiver owns the shares, then Optiver hedges by selling futures, ETFs, or stock, including on lit venues. Jane Street and bank dealer desks work the same way. That is optional inventory risk, not a requirement that every order sit on the public book. If the principal trade is off-exchange, it still must be reported to the tape through a FINRA TRF/ADF, usually within 10 seconds. Lit exchange fills print through the exchange as usual.
 
 A retail broker is the firm ordinary investors use to place stock orders, such as Robinhood, Fidelity, or Schwab. An institutional broker helps large funds trade. Those are different businesses from a market maker like Optiver, though they interact constantly.
 
@@ -142,23 +160,63 @@ A retail broker is the firm ordinary investors use to place stock orders, such a
 
 **1. Dark pool**
 
-A pension fund wants to buy 200,000 shares quietly. It sends the order to a dark pool. If another institution is already selling there, they may match near $100.00 midpoint. If not, nothing happens. The fund did not get a promise that the trade would finish.
+A pension fund wants to buy 200,000 shares quietly. Its broker's router sends the order to a dark pool such as Liquidnet, UBS ATS, or JPM-X. If another institution is already selling there, they may match near $100.00 midpoint. If not, nothing happens. The fund did not get a promise that the trade would finish. The print still goes to the tape; the pool name is usually not on the public print.
 
 **2. Broker internalization**
 
-You tell your broker, "Buy 500 shares of XYZ." Instead of sending your order to Nasdaq or NYSE, the broker fills you from its own inventory. You bought from the broker. The broker is long or short afterward and has to manage that risk.
+Internalization means the firm that handles your order takes the other side with its own capital, instead of matching you on an exchange. For many big bank brokerages, that can mean an affiliated trading desk.
 
-**3. Wholesaler execution (common for retail)**
+Example: Merrill Edge / Merrill Lynch is part of Bank of America. Merrill's own disclosures say customer equity orders may be executed with a Merrill equity trading desk as principal, and the confirmation will say Merrill acted as principal. Merrill also says it does not receive payment for order flow from equity liquidity providers the way some discount brokers do. So if your Merrill order is filled by Merrill's desk, that is closer to classic broker/affiliate internalization: you traded with Bank of America's brokerage complex, not with Nasdaq's book.
 
-You click buy 100 shares in a retail brokerage app. The retail broker often does not take the other side itself. It routes your order to a wholesale market maker. That wholesaler buys or sells against you as principal, then hedges or manages the inventory. This is a major path for small retail orders. It is usually not how a pension fund moves a giant block.
+**3. Wholesaler execution (what Robinhood usually does)**
+
+This is the common path for many retail market orders, and it is not the same as your app broker filling you itself.
+
+Example: You buy 100 shares of XYZ on Robinhood. Robinhood's Rule 606 reports show that non-directed stock orders are largely routed to wholesale market makers such as Citadel Securities, Virtu Americas, Jane Street Capital, and similar firms. Those wholesalers usually take the other side as principal and may pay Robinhood for the order flow. So you did not typically buy "from Robinhood's inventory." You bought from Citadel or Virtu (or another wholesaler), off-exchange, and the trade still prints to the tape afterward.
+
+SEC Rule 606 is the public order-routing report. Brokers must post, each quarter, where they sent non-directed retail-style stock and options orders, and whether they were paid for that flow. That is how we know Robinhood sent a large share of orders to Citadel and Virtu. Schwab and TD Ameritrade sit in a similar retail wholesaler world. Goldman Sachs is different: it is mainly an institutional bank and dealer, not a mass-market Robinhood-style app.
 
 **4. Wholesale block / RFQ**
 
-A pension fund needs to sell 500,000 shares now. Its broker calls or messages several market makers: "Firm quote on 500,000 XYZ?" Optiver, Jane Street, or a bank desk may reply with a two-way price. The broker lifts one offer. That market maker owns the stock immediately and must hedge. The fund got size certainty. It probably paid away from mid for that certainty.
+A pension fund needs to sell 500,000 shares now. Its broker messages several market makers: "Firm quote on 500,000 XYZ?" Optiver, Jane Street, or a bank desk may reply with a two-way price. The broker lifts one offer. That is a block trade in the ordinary desk sense: large size, negotiated away from the lit book, one print. NYSE historically treated 10,000 shares as a "block," but traders usually mean size that is large versus the name's depth, not that legal cutoff.
+
+When is it reported? After the parties agree and the trade is executed, the off-exchange report goes to a FINRA reporting facility as soon as practicable, no later than 10 seconds. You then see a large print. You do not see the RFQ chat.
+
+RFQ means request for quote: the broker asks market makers for a firm price on a stated size. TRF means Trade Reporting Facility: the usual FINRA pipe that takes an off-exchange trade and sends it to the consolidated tape. There are two TRFs today, run with Nasdaq and with NYSE. ADF means Alternative Display Facility: another FINRA facility that can display OTC quotes and report OTC trades in NMS stocks. Most of the large prints you see as "off-exchange" came through a TRF. The ADF is the same job with a different FINRA door. Neither is a dark pool. They are reporting utilities, not matching engines.
+
+Why can that print sit 3% away from the inside market? Sometimes the tape is stale versus live quotes, as the block section below explains. Sometimes the price is honestly worse than the current 100-share bid because 500,000 shares is not the same product as 100 shares. The market maker is taking inventory risk and will have to hedge. Academic upstairs-market work (Keim and Madhavan; Holthausen, Leftwich, and Mayers) finds large blocks often require a concession, and seller-initiated blocks often have a temporary markdown. Three percent is large for a liquid large-cap name and more plausible in a thinner stock, a rushed sale, or a print that is referenced, averaged, or contingent rather than a clean cash print at the live NBBO.
 
 **5. Direct counterparty (DCP)**
 
-Same idea as a wholesale block, but without the broker in the middle, and usually continuous rather than one-off. A large asset manager connects its trading system directly to Optiver. All day, Optiver streams a live bid and ask in size. When the manager wants to sell 600,000 shares, it hits Optiver's bid in one click. Optiver is the named other side. Optiver's own explainers describe DCP counterparties as institutions such as pension funds, asset managers, insurers, and sovereign wealth funds.
+"Continuous" here means a live two-way quote that stays up all day, not a stream of customer orders and not a public WebSocket anyone can join. Optiver refreshes a bid and an ask in size into the institution's EMS, meaning its execution management system: the trading screen and software the fund uses to send orders (examples are Bloomberg EMSX, FlexTrade, or a house-built blotter). When the fund wants to trade, it hits or lifts that quote. The plumbing is a private electronic link, often FIX; WebSocket is possible as a transport, but the point is the relationship, not the protocol.
+
+This is allowed. It is ordinary bilateral OTC trading between two broker-dealers or a broker-dealer and an institution. When they trade, that execution is reported to the tape like other off-exchange trades. The streaming quotes themselves are not public and do not print. Only the completed trade prints.
+
+### When a fund uses a dark pool versus DCP
+
+Optiver is not a fund. It is a market maker. A pension fund or hedge fund is the client choosing a path. Optiver is often the firm on the other side of DCP or RFQ.
+
+Use a dark pool when you hope natural opposite interest is already there, you can wait, and you want a chance at midpoint or $99.99-style improvement without showing size. Nobody promises you a fill. You are matching, not hiring a dealer.
+
+Use DCP (or an RFQ block) when you need size now and a firm price from a named market maker. Optiver's own explainers say DCP is for institutions that want continuous streamed size they can hit, with less pre-trade book impact and more price certainty. You usually pay a concession versus mid because Optiver is warehousing the risk. RFQ is the one-off version of that ask.
+
+A fund does not pick one forever. A rebalance algorithm may ping dark all afternoon, then RFQ or DCP a leftover block into the close.
+
+What Optiver itself does: it provides DCP and answers RFQs. That is its principal business with institutions. It also quotes on lit exchanges. When Optiver needs to hedge the inventory it just bought from a fund, it may route like anyone else, including dark pings and lit sweeps. The fund uses dark to hunt for a silent match. Optiver uses DCP to stand in as the match when the fund does not want to hunt.
+
+Worked path for a fund buying 50,000 shares with bid $99.98 / ask $100.02:
+
+```text
+patient buy
+  -> ping dark: maybe fill at $100.00 mid or $99.99 inside the spread
+  -> leftover shares
+  -> ISO sweep lit books at $100.02 and worse if needed
+
+need the whole block now
+  -> RFQ or DCP: Optiver (or another MM) is the other side
+  -> firm size, likely worse than mid
+  -> Optiver hedges on lit / dark / futures
+```
 
 ```text
 you need a trade
@@ -288,19 +346,35 @@ Orders turn a motive into a claim on liquidity. Market orders demand immediacy; 
 
 **wholesaler execution**: A retail broker sends your order to a wholesale market maker, which usually takes the other side as principal.
 
+**RFQ (request for quote)**: Asking one or more market makers for a firm price on a stated size, usually a block.
+
 **wholesale / RFQ block trading**: A broker asks one or more market makers for a firm quote on a large block. One market maker takes the whole risk.
 
 **direct counterparty (DCP) trading**: An institution connects directly to a market maker, gets live two-way prices all day, and trades without a broker in the middle.
+
+**EMS (execution management system)**: The software a fund uses to see prices and send orders. The DCP stream shows up there.
+
+**FIX (Financial Information eXchange)**: The standard electronic message protocol funds, brokers, and venues use to send orders, cancels, and fills. A FIX link is that private connection.
+
+**midpoint**: The price halfway between the best bid and best ask. Many dark fills occur here, which is price improvement versus lifting the offer or hitting the bid.
+
+**ISO (intermarket sweep order)**: A Reg NMS order type that lets a router execute on one lit venue immediately while also sending orders to clear better protected quotes on other lit venues. Dark pools do not have protected quotes, so they are not ISO-swept.
+
+**indication of interest (IOI) / conditional order**: A non-firm signal that size may be available in the dark. A match invitation can then ask the sender to firm up. Not a public book.
 
 **walking the book**: Consuming multiple price levels with one aggressive order because size exceeds depth at the best price.
 
 **consolidated tape**: The public record of U.S. equity trades disseminated through the SIP, including exchange and off-exchange prints.
 
-**Trade Reporting Facility (TRF)**: A FINRA facility used to report off-exchange U.S. equity trades to the tape.
+**Trade Reporting Facility (TRF)**: A FINRA facility that accepts off-exchange U.S. equity trade reports and sends them to the public tape. Most dark-pool, internalized, and upstairs prints go this way.
+
+**Alternative Display Facility (ADF)**: Another FINRA facility for OTC quoting and trade reporting in NMS stocks. Same idea as a TRF: a reporting door, not a matching venue.
 
 **block trade**: A large negotiated trade, often arranged away from the lit book and later reported as an off-exchange print.
 
 **sale condition**: A code on a tape print that flags how the trade was priced or sequenced, such as prior reference price, average price, or sold out of sequence.
+
+**Rule 606**: The SEC rule that makes brokers publish quarterly reports on where they routed non-directed customer orders and whether they were paid for that flow.
 
 ## Questions to Test Yourself
 
@@ -335,3 +409,7 @@ They often combine large size, known direction, and a closing-price benchmark. V
 8. Why can a 1 million share print appear below the current market?
 
 Off-exchange blocks report after execution, usually within about 10 seconds, while quotes keep moving, and some prints use earlier reference, stop, average, or contingent prices. The print also need not consume the displayed book you are watching.
+
+9. When would a fund use a dark pool instead of DCP with Optiver?
+
+Dark pool: hunt for a silent match and maybe buy at $100.00 or $99.99 instead of $100.02; fill is not guaranteed. DCP: Optiver is the named other side with a firm streamed size; you pay for certainty, and Optiver is a market maker, not the fund.
