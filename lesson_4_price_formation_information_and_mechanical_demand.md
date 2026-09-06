@@ -52,15 +52,38 @@ Lesson 6 goes deeper on adverse selection. Here the point is only that prices up
 
 Mechanical demand is required buying or selling created by a rule, benchmark, hedge, or cash need, not by a new view on the company's value. Index adds and deletes are the clean teaching case, because the methodology is public and the funds cannot skip the name.
 
-If stocks were perfect substitutes, extra buying by index funds would not raise the added stock's price. Arbitrageurs would sell the add and buy a twin, and the demand curve would stay flat. Shleifer (1986) used S&P 500 inclusions after 1976 as a test. Newly added stocks earned a significant positive abnormal return at announcement, about 2.8% in his 1976–1983 sample. The return did not vanish for at least ten days. It lined up with measures of index-fund buying, and not with S&P bond ratings, which is a strike against a simple "inclusion certifies quality" story. His conclusion: demand curves for stocks slope down. You have to pay more to buy more, because other holdings are imperfect substitutes and arbitrage is risky.
+A demand curve answers: at each price, how many shares will people hold? **Slope down** means the line falls as quantity rises: to get more of *this* stock into buyers' hands, the price has to go up so existing holders will sell. A **flat** demand curve means you can buy a lot at the same price, because a near-identical substitute exists and arbitrageurs cap the gap.
 
-Harris and Gurel (1986) used the same laboratory and stressed the other reading. S&P list changes make investors rebalance, and they are unlikely to reveal much about the firm's future products. They found prices rose more than 3% right after an addition was announced, and that rise was nearly fully reversed after two weeks. That is the price-pressure hypothesis: temporary liquidity demand, then fade.
+```text
+price
+  ^
+  |  --------     flat: extra buy, same price
+  |
+  |     \         slope down: extra buy, higher price
+  |      \
+  +--------> quantity of this stock
+```
+
+If stocks were perfect substitutes, extra buying by index funds would not raise the added stock's price. Arbitrageurs would sell the add and buy a twin, and the demand curve would stay flat. Shleifer (1986) used S&P 500 inclusions after 1976 as a test. Newly added stocks earned a significant positive abnormal return at announcement, about 2.8% in his 1976–1983 sample. That pop did not fade for at least ten days after inclusion. It did not keep climbing after inclusion. It stayed up. If the only story were a short hunt for sellers, the price should have come back once the funds finished buying. Index funds still held the shares after that, so he read the unreversed pop as extra demand that remained in the market: a shifted demand curve, not a one-day walk of the book. The move also lined up with measures of index-fund buying, and not with S&P bond ratings, which is a strike against a simple "inclusion certifies quality" story. His conclusion: demand curves for stocks slope down. You have to pay more to buy more, because other holdings are imperfect substitutes and arbitrage is risky. Ten days is not forever. Harris and Gurel used a similar window and saw fade. That is why the two papers disagree.
+
+Harris and Gurel (1986) looked at the same kind of S&P add and also saw a jump. They did not treat that jump as proof of a lasting new demand curve. S&P list changes make investors rebalance, and they are unlikely to reveal much about the firm's future products. Prices rose more than 3% right after an addition was announced, then nearly fully reversed after two weeks. Their reading: the pop was temporary liquidity demand, then fade. That is the price-pressure hypothesis.
 
 Those two 1986 papers are the argument you still hear on a desk. Shleifer: lasting extra demand, imperfect substitutes. Harris-Gurel: temporary pressure that should come back once the forced buying is done.
 
 Later work did not pick one slogan. Kaul, Mehrotra, and Morck (2000) studied a Toronto Stock Exchange 300 float-definition change that altered weights, conveyed no firm news, and produced about 2.3% excess return in the event week with no reversal as volume normalized. That is closer to a pure demand-curve shift. Petajisto (2011) measured announcement-to-effective-day moves from 1990 to 2005 of about +8.8% for S&P 500 adds and +4.7% for Russell 2000 adds, with large opposite moves for deletions. Most of that effect was still there two weeks later. He treated the premium as a hidden cost that index funds pay because they must trade into a known demand shock.
 
-The size of the *average* S&P add return is not a constant. Greenwood and Sammon (2025) document that the inclusion effect grew into the 1990s and then fell toward something statistically indistinguishable from zero in the 2010s, even as passive assets grew. Their main explanations are mechanical offset (more adds are migrations from the S&P MidCap 400, so MidCap trackers are forced sellers while S&P 500 trackers are forced buyers) and a much smaller price impact per unit of demand as other institutions learned to absorb the shock. The mechanism did not disappear. The easy, uncrowded version of the trade did.
+Greenwood and Sammon ask why the average S&P 500 add pop shrank after the 1990s even though more money tracks the index. They find about 3.4% in the 1980s, 7.6% in the 1990s, 5.2% in the 2000s, and 0.8% in the 2010s. That last number is so small, given the noise in the data, that they cannot say it is really different from no pop at all. If only S&P 500 fund size mattered, the pop should have grown. Two things changed.
+
+More adds now come from the S&P MidCap 400. The stock leaves the 400 and enters the 500, so MidCap funds (IJH, MDY) must sell the same name that S&P 500 funds (VOO, SPY, IVV) must buy. Leftover demand is 500 buying minus 400 selling. They call that a migration. If the stock was never in the 400, only the 500 funds are forced to buy, leftover demand is larger, and the pop is usually larger. Migrations were about 40% of their S&P 500 adds in the mid-1990s and later more than 60%. MidCap funds also grew, so the matching sell grew. In the late 2010s, migrations averaged about -2% while adds from outside the 400 were still positive.
+
+```text
+XYZ moves MidCap 400 -> S&P 500
+  MidCap funds sell XYZ
+  S&P 500 funds buy XYZ
+  leftover demand = 500 buy minus 400 sell
+```
+
+Even after that offset, some 500-fund buying remains. In the 1990s, that leftover buying moved price a lot. By the 2010s it moved price much less. The add is public and happens over and over, so other desks sell into the known indexer bid on purpose. The forced buy is still there. It just meets more willing sellers, so the average pop is smaller.
 
 ```text
 index add announced
