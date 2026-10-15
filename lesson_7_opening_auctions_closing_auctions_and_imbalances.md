@@ -52,7 +52,7 @@ price    buyers willing   sellers willing   matched   imbalance
 50.10        30,000           45,000         30,000    15,000 sell
 ```
 
-The exchange picks the price that maximizes matched shares: **$50.10, with 30,000 shares**. Every matched trade happens at $50.10. The MOC buyer pays ten cents above the mid. The LOC buyer at $50.05 does not fill at all, The sellers fill in price priority: the 15,000 MOC shares and the 10,000 shares at $49.98 fill completely, and the seller at $50.10 fills only 5,000 of 20,000.
+The exchange picks the price that maximizes matched shares: **$50.10, with 30,000 shares**. Every matched trade happens at $50.10. The MOC buyer pays ten cents above the mid. The LOC buyer at $50.05 does not fill at all. The sellers fill in price priority: the 15,000 MOC shares and the 10,000 shares at $49.98 fill completely, and the seller at $50.10 fills only 5,000 of 20,000.
 
 This is the imbalance problem in one picture. There were 30,000 shares of buy MOC, which must trade at any price, but only 25,000 shares of sell interest below $50.10. The price had to climb to the next seller.
 
@@ -82,6 +82,20 @@ price    buyers willing   sellers willing   matched   imbalance
 ```
 
 Now two prices tie at 40,000 matched shares with zero imbalance. Nasdaq's tie-break, after maximizing matched shares and minimizing imbalance, is the price closest to the inside midpoint. That picks **$50.02**. The closing price dropped eight cents, matched volume rose from 30,000 to 40,000, and the LOC buyer at $50.05 now fills.
+
+It helps to put dollars on who won and who lost. Assume XYZ opens tomorrow at the old mid of $50.00, because nothing was learned about the company:
+
+```text
+                                   without offset     with offset
+closing price                         $50.10            $50.02
+MOC buyer's premium over the mid      $0.10 x 30,000    $0.02 x 30,000
+                                      = $3,000          = $600
+liquidity provider                    not involved      sold 15,000 at $50.02,
+                                                        buys back at $50.00
+                                                        = +$300
+```
+
+The liquidity provider's $300 is not free money. It carried a 15,000-share short overnight, and if XYZ opened at $50.50 on news, it would have lost $7,200. That is Lesson 5's inventory risk, now with an overnight gap in it. The provider is willing to take that risk because the imbalance is public and mechanical, which is Lesson 6's low-μ case. The MOC buyer is better off too: it saved $2,400, even though someone else made $300 from its order.
 
 The general mechanism:
 
@@ -117,9 +131,8 @@ A short Python version of the rule:
 ```python
 def closing_auction_price(closing_orders, reference_mid):
     """Return the price that maximizes matched shares, then minimizes imbalance, then is closest to the mid."""
-    candidate_prices = sorted(
-        {order["limit"] for order in closing_orders if order["limit"] is not None}
-    )
+    limit_prices = {order["limit"] for order in closing_orders if order["limit"] is not None}
+    candidate_prices = sorted(limit_prices | {reference_mid})  # the mid matters if the book is all MOC
     best_ranking_key, best_price, best_matched_shares = None, None, None
     for price in candidate_prices:
         buy_shares_willing = sum(
@@ -154,6 +167,24 @@ closing_auction_price(closing_book, reference_mid=50.00)   # (50.02, 40000)
 
 This is a simplification. Real auctions also include the continuous book (on Nasdaq, resting orders in the regular book join the cross), apply price bands, and handle imbalance-only orders specially. The core ranking, though, is the one Nasdaq publishes.
 
+## Reading an Imbalance Like a Desk
+
+An imbalance number on its own means little. "15,000 to buy" is huge in a stock that trades 50,000 shares at the close and is nothing in one that trades 5 million. A desk usually reads it in three steps. This is a working heuristic, not an exchange rule.
+
+First, scale it. Divide the imbalance by the stock's typical closing auction volume, and by its average daily volume (ADV). Lesson 3's point was that size only means something relative to available liquidity.
+
+```text
+stock    imbalance    typical close volume    imbalance / close volume
+XYZ       15,000            200,000                  7.5%
+ABC      300,000            200,000                  150%
+```
+
+XYZ's imbalance will probably be absorbed by ordinary offsetting liquidity. ABC's imbalance is larger than a normal day's whole closing auction, so the price will probably have to move to attract enough sellers.
+
+Second, watch how it changes. Between 3:50 and 4:00, the imbalance either shrinks as offsetting orders arrive or stays large because nobody wants the other side. A shrinking imbalance with the indicative price moving back toward the mid is the offset mechanism working. An imbalance that stays large with the indicative price drifting away from the mid is the warning sign.
+
+Third, ask why it exists. A large imbalance on an index rebalance day, matching the flow you estimated in advance, is mechanical and mostly uninformed. A large imbalance on an ordinary day after late news might not be. The same number calls for a different price depending on that answer, which is the whole of Lesson 6 applied to the close.
+
 ## The Opening Auction
 
 The opening auction solves a different problem. Overnight, news arrives, foreign markets trade, and futures move, but the stock has not traded. At 9:30 a.m., the first price needs to absorb all of that at once. If the market simply opened continuous trading, the first few orders would trade against whatever stale limit orders happened to be sitting in the book, and those resting orders would be picked off, which is Lesson 6's free-option problem at its worst.
@@ -180,6 +211,8 @@ Bogousslavsky and Muravyev found that closing prices often deviate from the clos
 Exchanges limit how far the close can move. Nasdaq's FAQ describes a threshold for the closing cross of the greater of $0.50 or 10% from the midpoint, with tighter bands for exchange-traded products. These bands stop a catastrophic print but do not prevent a price that is meaningfully distorted within the band.
 
 A subtle consequence: the index fund that buys at a distorted close shows zero tracking error, because the index uses the same distorted price. The cost is still real. The fund bought at $50.10 a stock that trades at $50.00 the next morning, and so did the index. Fund investors pay that cost, but it is invisible in the tracking-error report. This is closely related to Petajisto's "hidden cost" from Lesson 4.
+
+Predictability makes this worse as well as better. If everyone can estimate an index fund's closing buy days in advance, some traders buy earlier and plan to sell into the close. That can supply liquidity at the auction, but it can also raise the price the fund pays before the close even starts. Lesson 16 returns to this crowding problem.
 
 ## Common Misconceptions
 

@@ -101,7 +101,9 @@ With μ = 0.30 and H − L = $20, that is $6, matching the worked example. The f
 1. The spread grows with **how much informed trading there is** (μ). More informed traders, wider spread.
 2. The spread grows with **how much there is to know** (H − L). Before earnings, a drug trial, or an index announcement, the possible gap in value is larger, so the spread is wider even if the share of informed traders has not changed.
 
-The symmetric 50/50 prior was a simplifying assumption that keeps the algebra short. With an uneven prior the formulas are messier, but the two conclusions hold.
+A third consequence hides inside μ. It is a *share*, not a count. If more uninformed traders show up while the number of informed traders stays the same, μ falls and the spread tightens. Going from 30 informed and 70 uninformed traders to 30 informed and 170 uninformed cuts μ from 0.30 to 0.15 and the spread from $6 to $3. Uninformed volume is what makes a market cheap to trade in, which is why liquidity tends to attract more liquidity. Lesson 7 uses this idea to explain why so much flow gathers at the close.
+
+The symmetric 50/50 prior was a simplifying assumption that keeps the algebra short. With an uneven prior the formulas are messier, but the three conclusions hold.
 
 A tiny Python version, for checking other numbers:
 
@@ -164,6 +166,18 @@ price drifts toward true value; informed profit shrinks
 
 The uncomfortable corollary for a flows desk: the market maker cannot see *why* the run of buys is happening. A large uninformed buyer, such as an index fund buying an add, produces the same tilt in order flow. The market maker updates the same way, and the uninformed buyer pays for that update. This is one reason Lesson 3's market impact exists even for trades that carry no news.
 
+## Where the Model Breaks
+
+Glosten-Milgrom is a teaching model, and it is worth knowing which of its assumptions do the work, so you know when to stop trusting it.
+
+It assumes every trade is one unit. Real traders choose size, and an informed trader would rather trade a lot quietly than a little at a time. Kyle's (1985) model, mentioned in Lesson 4, handles that case: price moves in proportion to net order flow, and the informed trader spreads orders out to hide among the noise. So the spread is not the whole story. For a large order, the information charge shows up as price impact that grows with size.
+
+It assumes market makers are competitive and risk-neutral, so they earn zero on average and do not mind inventory. Real market makers are limited by inventory and capital, as Lesson 5 showed, so in practice the quoted spread pays for both information and inventory. Splitting the two in real data is hard, and the markout section below shows why.
+
+It assumes μ is a fixed number that everyone knows. In practice μ is exactly what a market maker is trying to estimate, and it changes from client to client, venue to venue, and minute to minute. Most of the practical techniques below are ways to estimate μ for the flow in front of you.
+
+Use the model for direction and intuition: what makes spreads wider, why quotes follow order flow, and who pays. Do not use it to compute a real spread from a guess at μ.
+
 ## A Quote Is a Free Option
 
 Copeland and Galai (1983) gave a second way to see the same cost. A posted bid of $99.95 for 1,000 shares is a promise: anyone may sell you 1,000 shares at $99.95 until you cancel. That is a put option you have given to the whole market for free. A posted offer is a free call option.
@@ -195,21 +209,33 @@ def average_markout_per_share(our_fills, mid_after_fill_by_id):
     return total_markout_dollars / total_shares
 
 
-index_fund_fills = [
+# Client A trades both ways for its own reasons. Client B keeps buying just before the price rises.
+client_a_fills = [
     {"fill_id": 1, "our_side": "sell", "fill_price": 100.05, "shares": 1_000},
     {"fill_id": 2, "our_side": "buy", "fill_price": 99.95, "shares": 1_000},
 ]
-hedge_fund_fills = [
+client_b_fills = [
     {"fill_id": 3, "our_side": "sell", "fill_price": 100.05, "shares": 1_000},
     {"fill_id": 4, "our_side": "sell", "fill_price": 100.15, "shares": 1_000},
 ]
 mid_one_minute_later = {1: 100.00, 2: 100.01, 3: 100.20, 4: 100.35}
 
-average_markout_per_share(index_fund_fills, mid_one_minute_later)   # about +0.055
-average_markout_per_share(hedge_fund_fills, mid_one_minute_later)   # about -0.175
+average_markout_per_share(client_a_fills, mid_one_minute_later)   # about +0.055
+average_markout_per_share(client_b_fills, mid_one_minute_later)   # about -0.175
 ```
 
-The first counterparty is paying the spread and leaving. The second keeps buying just before the price rises. Across thousands of fills, these averages separate clients and venues by how informed their flow is. That is why liquidity providers price segmented flow differently: retail orders routed to wholesalers, a dealer's known clients, and anonymous lit-market flow get different prices because their markouts differ. Easley, Kiefer, O'Hara, and Paperman (1996) formalized a related idea, the probability of informed trading (PIN), estimated from how unbalanced buys and sells are on different days.
+Client A pays the spread and moves on. Client B keeps buying just before the price rises.
+
+The same numbers give the standard way to split a spread into what the market maker keeps and what it gives back. Take fill 3. The market maker sold at $100.05 when the mid was $100.00, so it charged a **half-spread** of $0.05 at the moment of the trade. A minute later the mid is $100.20, so measured against that later price, the market maker earned $100.05 − $100.20 = −$0.15. That is the **realized half-spread**. The gap between the two, $0.05 − (−$0.15) = $0.20, is the **price impact** of the trade: how far the mid moved in the trader's favor after the fill.
+
+```text
+half-spread charged = realized half-spread + price impact
+              $0.05 =             -$0.15  +        $0.20
+```
+
+For Client A's fill 1, the same identity reads $0.05 = $0.05 + $0.00. The market maker kept the whole spread because the price did not move. Across many fills, the price impact part is the cost of adverse selection (plus some impact from the flow itself), and the realized part is what pays for inventory, operations, and profit. U.S. market centers publish effective and realized spreads in their SEC Rule 605 execution-quality reports, which use these definitions with the full spread rather than the half-spread.
+
+Measured across thousands of fills, markouts and realized spreads separate clients and venues by how informed their flow is. That is why liquidity providers price segmented flow differently: retail orders routed to wholesalers, a dealer's known clients, and anonymous lit-market flow get different prices because their markouts differ. Easley, Kiefer, O'Hara, and Paperman (1996) formalized a related idea, the probability of informed trading (PIN), estimated from how unbalanced buys and sells are on different days.
 
 Two cautions. Markouts mix adverse selection with inventory: a large uninformed sell order still pushes the price down after you buy from it, so a negative markout can come from impact rather than information. And the horizon matters. A fill that looks bad after one second can look fine after an hour, and vice versa.
 
@@ -277,6 +303,10 @@ Adverse selection is the risk that the traders who choose to hit your quote are 
 
 **markout**: The signed change from the fill price to the mid at a later time, used to measure whether fills were good or bad for the liquidity provider.
 
+**realized spread**: What a liquidity provider actually earns on a fill once the mid has moved, measured against the mid some time after the trade.
+
+**price impact (of a fill)**: How far the mid moves in the trader's favor after the fill; the part of the quoted spread the liquidity provider gives back.
+
 **free option of a quote**: The idea that a resting bid or offer lets anyone trade at that price until it is cancelled, so it is exercised when the price is wrong.
 
 **stale quote / latency arbitrage**: Trading against a quote that has not yet updated to public information, in the short window before its owner can cancel.
@@ -312,6 +342,10 @@ Copeland, Thomas E., and Dan Galai. 1983. "Information Effects on the Bid-Ask Sp
 Budish, Eric, Peter Cramton, and John Shim. 2015. "The High-Frequency Trading Arms Race: Frequent Batch Auctions as a Market Design Response." *Quarterly Journal of Economics* 130 (4): 1547–1621. https://conference.nber.org/conf_papers/f69665.pdf
 
 Aquilina, Matteo, Eric Budish, and Peter O'Neill. "Quantifying the High-Frequency Trading 'Arms Race'." NBER Working Paper 29011; FCA Occasional Paper No. 50. Summary: https://www.nber.org/digest/202110/race-exploit-stock-price-differences-between-exchanges
+
+Kyle, Albert S. 1985. "Continuous Auctions and Insider Trading." *Econometrica* 53 (6): 1315–1335.
+
+U.S. Securities and Exchange Commission. Rule 605 of Regulation NMS, "Disclosure of order execution information." 17 CFR 242.605. https://www.law.cornell.edu/cfr/text/17/242.605
 
 Easley, David, Nicholas M. Kiefer, Maureen O'Hara, and Joseph B. Paperman. 1996. "Liquidity, Information, and Infrequently Traded Stocks." *Journal of Finance* 51 (4): 1405–1436.
 
