@@ -47,7 +47,9 @@ Reread the draft as the reader, paragraph by paragraph, and run this checklist. 
 | Check | Question to ask of the draft |
 |---|---|
 | Object | Is every thing I refer to defined, with an example, before I use it? |
+| Source | Can I point to where every number came from: a given input, a derivation shown on the page, or a citation? |
 | Number | For every number: what does it measure, *of what*, in what units, and what does it **not** mean? |
+| First appearance | Is any number shown for the first time inside a summary table? If so, derive one row first. |
 | Look-alikes | Are there two numbers the reader could confuse (a weight vs an ownership share, tracking difference vs tracking error)? If so, put them side by side. |
 | Why this value | Does any result differ from the obvious guess (√12 instead of 12, 21 bp instead of 8.8%)? If so, explain the gap. |
 | Sign | Can this thing go the other way? Can a "cost" be a gain? Can the fund beat the index? Say so. |
@@ -82,11 +84,29 @@ These are real failures from writing Lessons 8 and 9. Each row is a pattern to a
 | "Mechanical rules can be computed in advance. Committee decisions can only be estimated." | Read it the other way around | In comparisons, name the subject in every sentence, state the consequence, and use a side-by-side table. |
 | Showed 5.2% ownership next to 51.5% weights | "Is 5.2% how much of the $1bn goes in?" | Contrast look-alike numbers: say what each one answers and what it does not. |
 | Opened with "an index is a recipe that turns facts into a portfolio" | "Explain what an index is first, with an example." | Concrete before abstract. |
+| Said "the $10.0bn cancels" and jumped straight to the result | "Format this better." | Show the expression with the cancelling term **bolded** top and bottom, then the result on its own line. Use blockquote lines, not code blocks, and verify a second case in a table. |
+| Showed total-cap weights of 38.5% in a comparison table with no calculation | "Why is total cap 38.5%?" | Every number needs a visible source. Show what each scheme divides by. |
+| Jumped from the float change straight to a table of new holdings ($313m) | "I think you skipped a few steps. Show B." | Derive one row fully (new tradable value → new total → new weight → new holding → trade) before the summary table, then check it a second way. |
+| Said "the Russell 2000 has twice as many companies but is smaller" | "Does the Russell 2000 include the 1000? How can it be smaller?" | When a name suggests a relationship that isn't there (2000 > 1000, so it must contain it), state what the name does and doesn't mean, with a membership table. |
 | Space-aligned tables in code blocks; a six-column table | "I can't read this." | Use pipe tables with at most 4–5 short columns. Put long working below the table. |
 
 ## Worked Calculations
 
 Most of the failures above happened in the math. Follow these rules for any calculation.
+
+**Every number has a source the reader can see.** Every number on the page is one of three things:
+
+1. **A given input**, stated where it first appears and labeled as given or stylized ("B has 100m shares at $100").
+2. **A derived number**, with its derivation shown on the page before the number is used, or right where it appears.
+3. **A cited fact**, with a source.
+
+If a number fits none of these, the reader cannot check it and will ask where it came from. Before finishing, scan every number in the draft and point to its source. Watch for numbers that are derived from an *earlier* step but quietly change, such as a new total after an event. They need a fresh derivation.
+
+**Derive one row fully before showing a summary table.** A table of results (old weight, new weight, old holding, new holding, trade) compresses five operations into each row. That is fine only after one row, usually the most interesting stock, has been walked through step by step. Then say "doing the same for every stock:" and show the table. A summary table must never be the first place a number appears.
+
+**Check the answer a second way.** For any number the lesson depends on, show a second route to it: the ownership slice × tradable shares as well as weight × fund size, or the total of the sales matching the purchase. Two routes agreeing builds trust, and the second route is usually the desk shortcut.
+
+**Spell out every input that changes.** When an event changes an input, show the arithmetic behind the new value. "Float factor rises from 0.40 to 0.70" needs "40% was tradable, the founder sold 30% of the company, 40% + 30% = 70%."
 
 **One operation per step.** Number the steps. Give each step its own small table with inputs, the operation, and the result (`weight × fund size = dollars`, then `dollars ÷ price = shares`, then `shares ÷ tradable shares = ownership`). For a statistic, show every stage. For a standard deviation that means: subtract the mean, square, sum, divide by n − 1, take the square root, then annualize.
 
@@ -112,7 +132,7 @@ Write in a natural tutor's voice. Avoid filler such as "Let's dive into", "It is
 - Start with a single `#` title, then `## Learning Goal`, which explains in prose what the reader learns and why it matters on a desk.
 - Choose middle sections that fit the topic. Use headers to make the material easier to follow, not to fill a template.
 - End with `## Recap` in paragraph form, then `## New Terms` with plain definitions, then `## Questions to Test Yourself`, each answered in about two sentences, then `## Sources`.
-- Formatting for `glow -t`: use pipe tables with numeric columns right-aligned and at most 4–5 short columns. Keep code blocks for one-line formulas and arrow diagrams. Never put tables inside code blocks.
+- Formatting for `glow -t`: use pipe tables with numeric columns right-aligned and at most 4–5 short columns. glow truncates long headers with "…", so keep each header to one or two words (about 15 characters). Explain what each column means in a short list under the table instead of in the header. Keep code blocks for one-line formulas and arrow diagrams. Never put tables inside code blocks.
 - Use diagrams when they make structure visible, such as a flow, a timeline, or a feedback loop. Do not add them for decoration.
 
 ## Markets: What Every Explanation Should Answer
