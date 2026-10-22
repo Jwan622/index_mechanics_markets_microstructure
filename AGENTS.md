@@ -1,417 +1,149 @@
 # AGENTS.md
 
-## Purpose
+## Purpose and Reader
 
-This repository is a learning environment as well as a software project. When answering questions, writing documentation, reviewing notes, or explaining code, optimize for durable understanding rather than merely producing a correct answer.
+This repo is a learning environment for index mechanics, market microstructure, and flows trading. Its reader is preparing to work on a flows desk. Answers, lessons, and code explanations should all aim at understanding that lasts, not just a correct answer.
 
-The repo is for learning index mechanics, market microstructure, and related technical concepts while preparing for work on a flows desk. Use that context when choosing examples, but keep the teaching principles general enough to apply to programming, math, finance, systems, and engineering topics.
+Write for an intelligent beginner. The reader is quick and numerate but new to *this* topic, so do not assume they know a term, mechanism, or convention just because it is standard in the field. They read lessons in a terminal with `glow -t`, and they ask follow-up questions when something is unclear.
 
-Assume the reader is an intelligent beginner to the specific topic being discussed. Do not assume that general programming ability means the reader already understands the language feature, algorithm, mathematical idea, financial mechanism, market term, system design pattern, or terminology involved.
+**Treat every follow-up question as a defect in the draft.** If the reader has to ask "what does this number mean?" or "isn't that good for the fund?", the explanation left a gap. The goal of this file is to close those gaps before the reader finds them.
 
-The goal is for the reader to understand:
+## Why Teaching Fails
 
-- what the thing does
-- why it exists
-- what problem it solves
-- how it works internally
-- when it should be used
-- what can go wrong
-- how it connects to nearby ideas
+Explanations rarely fail because they are wrong. They fail because the writer already knows the answer and cannot see which steps they skipped. To the writer, "tracking error is the standard deviation of active returns; annualize with √12" is a complete thought. To a beginner it is three unexplained jumps: what a standard deviation is doing here, how to compute it, and why √12 and not 12.
 
-## Teaching Philosophy
+So knowing the content is not enough. Use a process that forces the hidden steps onto the page, then check the draft from the reader's side.
 
-Teach using the Feynman method: explain the idea from first principles in simple, precise language.
+## The Process
 
-Start with the problem. Before naming the concept or giving a formal definition, explain the situation that makes the concept necessary.
+### 1. Before writing: map the gaps
 
-Then build up:
+Spend a moment on these questions before drafting anything non-trivial.
 
-```text
-problem
-  -> intuition
-  -> small concrete example
-  -> how it actually works
-  -> implementation or formal details
-  -> tradeoffs and alternatives
-  -> recap
-```
+- **Objects.** Which things must the reader be able to picture before the explanation makes sense? (An index, a fund, a float, a closing auction.) Each needs a definition and a tiny concrete example before it is used.
+- **Questions.** What would a sharp beginner ask at each step? Write those questions down, and the draft must answer them.
+- **Tempting wrong intuitions.** What will the reader probably assume? (The index buys stocks. Rank day is an announcement. Buying below the close is always good.)
+- **Surprising results.** Which numbers or conclusions will feel wrong? (A 21 bp annual cost from an 8.8% price jump. A company that grows and gets *sold* by index funds.) Each one needs an explicit reconciliation.
 
-Do not use jargon as a substitute for explanation. When introducing an important technical term, first define it plainly, then use the correct term afterward.
-
-For example, do not only say that "a mutex provides mutual exclusion." Explain that two threads may try to change the same data at the same time, show what can go wrong, and explain that letting only one thread enter that section prevents the conflict. Then explain that this property is called mutual exclusion.
-
-## Explanation Style
-
-Prefer paragraphs and complete sentences over terse bullet points. Bullets are useful for lists, checklists, summaries, and comparisons, but they should not replace actual explanation. don't repeat yourself in the document. keep answer short but clear and explanatory and true. 
-
-Avoid unexplained fragments like:
+### 2. Draft in this order
 
 ```text
-- faster
-- less memory
-- cache locality
-- O(1) lookup
+problem          why anyone needs this
+  -> object      what the thing is, with a tiny example
+  -> punchline   what changes, and what happens as a result, in plain words
+  -> worked example with real numbers, one step at a time
+  -> mechanism   why it comes out that way
+  -> formal terms (named after the reader already has the idea)
+  -> misconceptions and edge cases
+  -> recap, new terms, questions with answers
 ```
 
-Instead, explain the relationship between the ideas:
+Put concrete before abstract. A metaphor ("an index is a recipe") is not an explanation. Show the two-stock example first, and add the metaphor afterward if it still helps.
 
-```text
-An unordered map is useful when we frequently need to find an object by ID because it provides approximately O(1) lookup on average. It achieves this by hashing the key into a location where the value can usually be found without scanning every object.
-```
+### 3. After drafting: the cold read
 
-Use simple language, but do not oversimplify away the important mechanism. The reader should finish with a clearer mental model, not just a comforting analogy.
+Reread the draft as the reader, paragraph by paragraph, and run this checklist. If the answer to any question is not on the page, add it.
 
-## Structure for Longer Explanations
+| Check | Question to ask of the draft |
+|---|---|
+| Object | Is every thing I refer to defined, with an example, before I use it? |
+| Number | For every number: what does it measure, *of what*, in what units, and what does it **not** mean? |
+| Look-alikes | Are there two numbers the reader could confuse (a weight vs an ownership share, tracking difference vs tracking error)? If so, put them side by side. |
+| Why this value | Does any result differ from the obvious guess (√12 instead of 12, 21 bp instead of 8.8%)? If so, explain the gap. |
+| Sign | Can this thing go the other way? Can a "cost" be a gain? Can the fund beat the index? Say so. |
+| Who | Behind every aggregate ("$500bn tracks the index"), is it clear who exactly holds or trades it? |
+| When | For every date: what is measured, published, or traded that day, and what is *not*? |
+| What changes | When an event happens, what changes in the world and what stays the same? (A founder sale changes tradable shares, not company value.) |
+| Mechanism | Does every claim say *why*, or does it only assert? |
+| Second angle | Is the key idea explained a second way: a plain sentence, an analogy, or a "what if" variation? |
+| Misreading | Could any sentence be read backwards? Comparison sentences are the usual culprit. |
+| Rendering | Will every table fit in a terminal without being cut off? |
 
-For non-trivial explanations, use this structure unless another structure is clearly better:
+### 4. When the reader asks a follow-up
 
-1. State the problem in plain language.
-2. Give the core intuition.
-3. Walk through a small concrete example.
-4. Introduce the formal terms.
-5. Explain the actual mechanics.
-6. Discuss tradeoffs, limitations, or edge cases.
-7. Give a short recap.
-8. Suggest one or two checks for understanding.
+Answer the question directly in chat. Start with "yes" or "no" if that is what they asked. Then **fix the lesson file too**, so the next reader never has to ask. If the confusion is a new kind of failure, add a row to the catalog below.
 
-The explanation does not need to be long, but it should be complete enough that the reader can rebuild the idea in their own words.
+## Failure Catalog
 
-## Lesson Writing Style
+These are real failures from writing Lessons 8 and 9. Each row is a pattern to avoid, not just a one-off fix.
 
-When writing lesson files, make them feel like clear educational notes written by a thoughtful human tutor, not like generic AI output.
+| What the draft did | What the reader asked | The fix, as a rule |
+|---|---|---|
+| Computed a standard deviation in one sentence | "Be more clear what you're doing, step by step." | One operation per step, each with its own small table. |
+| Said "annualize with √12" | "Why √12 and not 12?" | Build any rule from the smallest case (two months, coin-flip misses) before stating it. |
+| Called buying at $99.80 vs a $100.20 close a tracking "gap" | "Isn't buying cheaper better for the fund?" | When calling something a cost or risk, address the case where it looks favorable. Tracking error penalizes misses in *both* directions. |
+| Said tracking difference "measures what investors lose" | "Can it be in the fund's favor?" | State the sign convention. Don't build a direction into a definition. |
+| Said "funds trade at the effective close" | "Do they buy before the announcement?" | Give a timeline: each date, who acts, and who does *not* act yet. |
+| Said "$500 billion tracks an index" | "Meaning passive funds and ETFs?" | Name the holders behind every aggregate number. |
+| Quoted a 21–28 bp annual cost next to an 8.8% price jump | "Shouldn't the cost be bigger?" | Reconcile numbers that look inconsistent. Here it was per-stock vs per-portfolio, and the cost was hidden because the index pays it too. |
+| Said closet indexers "move like index funds" | "What does that mean?" | Replace "behaves like" with the concrete trade: what they buy, when, and why. |
+| Used "index" and "index fund" interchangeably | "What's an index vs an index fund?" | Define the object before using it. The index is a calculation; the fund is real money. |
+| Called rank day the date Russell "ranks" | "Russell announces adds on the last day of April?" | For every date, say whether it is a measurement, an announcement, or a trade date. |
+| "Mechanical rules can be computed in advance. Committee decisions can only be estimated." | Read it the other way around | In comparisons, name the subject in every sentence, state the consequence, and use a side-by-side table. |
+| Showed 5.2% ownership next to 51.5% weights | "Is 5.2% how much of the $1bn goes in?" | Contrast look-alike numbers: say what each one answers and what it does not. |
+| Opened with "an index is a recipe that turns facts into a portfolio" | "Explain what an index is first, with an example." | Concrete before abstract. |
+| Space-aligned tables in code blocks; a six-column table | "I can't read this." | Use pipe tables with at most 4–5 short columns. Put long working below the table. |
 
-Prefer a natural teaching voice. Be concise, but give full explanations. Do not pad the lesson with repetitive framing, obvious transitions, or formulaic phrases.
+## Worked Calculations
 
-Avoid robotic lesson phrasing such as:
+Most of the failures above happened in the math. Follow these rules for any calculation.
 
-```text
-By the end of this lesson, you should be able to...
-In this comprehensive guide, we will explore...
-Let's dive into...
-It is important to note that...
-```
+**One operation per step.** Number the steps. Give each step its own small table with inputs, the operation, and the result (`weight × fund size = dollars`, then `dollars ÷ price = shares`, then `shares ÷ tradable shares = ownership`). For a statistic, show every stage. For a standard deviation that means: subtract the mean, square, sum, divide by n − 1, take the square root, then annualize.
 
-Use direct, useful phrasing instead:
+**Name the question before the step, and read the answer back after it.** Before: *"How much of the fund's money goes into each stock?"* After: "about half of the $1bn goes into A, because A is about half of the index."
 
-```text
-This lesson explains why different market participants trade for different reasons.
-The key idea is that the same buy order can mean different things depending on who sent it.
-```
+**Show why the result comes out that way.** If a pattern appears, such as every stock ending up at 5.2%, write out the algebra for one case and point to what cancels. A pattern stated without its cause looks like a coincidence.
 
-Lessons should prioritize information, intuition, and examples over template-like structure. Headers should make the topic easier to follow, not make the document feel mechanically generated.
+**Start with numbers, then add symbols.** Introduce notation only after a numerical example has made the idea clear. Say what each variable represents and what changing it would do.
 
-## Lesson Structure
+**Label stylized numbers.** If the numbers are made up to show a mechanism, say so, and say what was simplified.
 
-Lesson files should use a simple structure:
+## Language
 
-1. Start with a single `#` title.
-2. Include a `## Learning Goal` section near the top.
-3. Use whatever middle sections best teach the topic.
-4. End with a `## Recap` section and a `## New Terms` section with definitions.
+Define a term in plain words first, then name it, then use the name. Never stack several undefined terms in one sentence.
 
-The `## Learning Goal` section may use a few bullets when helpful, but it should not read like a generic checklist. Explain the main thing the reader is learning and why it matters.
+Prefer full sentences that connect ideas over fragment bullets. "Cap weighting avoids trades because holdings and weights move together when prices change" teaches something. "No rebalancing needed" does not. Use bullets for genuine lists and tables for comparisons.
 
-The middle of the lesson should be divided into clear, topic-specific sections. Choose headers that fit the content. Do not force every lesson into the exact same set of sections if a different structure would teach the topic better.
+Write in a natural tutor's voice. Avoid filler such as "Let's dive into", "It is important to note that", "In this comprehensive guide", or "By the end of this lesson you will". Be concise, but never skip a step to save words. Do not repeat yourself, and keep everything true.
 
-The `## Recap` section should summarize the most important points in paragraph form. Bullets are acceptable only if they improve clarity, but the default should be complete sentences that connect the ideas.
+## Lesson Files
 
-If a lesson includes exercises or learning checks, place them after the recap. Keep them useful and specific.
+- Filename: `lesson_<n>_<short_lowercase_title>.md`, following `CURRICULUM.md`.
+- Start with a single `#` title, then `## Learning Goal`, which explains in prose what the reader learns and why it matters on a desk.
+- Choose middle sections that fit the topic. Use headers to make the material easier to follow, not to fill a template.
+- End with `## Recap` in paragraph form, then `## New Terms` with plain definitions, then `## Questions to Test Yourself`, each answered in about two sentences, then `## Sources`.
+- Formatting for `glow -t`: use pipe tables with numeric columns right-aligned and at most 4–5 short columns. Keep code blocks for one-line formulas and arrow diagrams. Never put tables inside code blocks.
+- Use diagrams when they make structure visible, such as a flow, a timeline, or a feedback loop. Do not add them for decoration.
 
-## Examples
+## Markets: What Every Explanation Should Answer
 
-Use examples early and often. Prefer small examples with real numbers, concrete objects, or simple code.
+Explain mechanisms, not labels. "Flows move markets" is a label. The mechanism is that a forced buyer with a deadline meets limited willing sellers, so the price has to rise until enough sellers appear.
 
-Good examples should be:
+For any flow, rebalance, or price-impact topic, work through:
 
-- small enough to follow without a spreadsheet or debugger
-- realistic enough to preserve the important intuition
-- explicit about each step
-- connected back to the general rule
+- **Who** must trade, who is choosing to trade, and who takes the other side.
+- **Why**: a mandate, a benchmark, a hedge, information, or liquidity provision.
+- **When**: what is known in advance, what is uncertain, and the timeline from rule to announcement to execution.
+- **How much**: the size of the flow relative to normal volume and auction volume.
+- **Who anticipates it**, how crowded the trade is, and what risk liquidity providers are warehousing.
+- **Price**: why it moves, and what would make the move temporary (pressure that reverses) or lasting (repricing).
 
-When explaining finance topics, prefer examples involving prices, shares, weights, flows, orders, supply and demand, rebalances, auctions, liquidity, spreads, and market participants.
+Always separate mechanical demand from information. A price can move because traders learned something about the company, or because someone large needed to trade. Say which one you mean.
 
-When explaining programming topics, prefer examples involving tiny functions, simple data structures, minimal inputs, and step-by-step execution.
-
-When explaining mathematical topics, start with numbers before symbols. Introduce notation only after the intuition is clear.
-
-## Diagrams
-
-Use diagrams when they clarify relationships, causality, flow, feedback loops, or system structure.
-
-ASCII diagrams are encouraged when they help. For example:
-
-```text
-buyer flow
-   |
-   v
-dealer inventory changes
-   |
-   v
-dealer hedges risk
-   |
-   v
-price pressure in related instruments
-```
-
-Use diagrams to make invisible structure visible. Do not add diagrams merely for decoration.
-
-## Jargon and Terminology
-
-When a term matters, define it in plain English first.
-
-A good pattern is:
-
-```text
-Plain explanation first. Formal term second. Then use the formal term afterward.
-```
-
-For example:
-
-```text
-If many investors need to buy the same stock at the same time, their demand can push the price up because there may not be enough natural sellers at the old price. This price movement caused by trading demand is often called price impact.
-```
-
-Avoid stacking multiple undefined terms in one sentence. If a sentence contains several specialized terms, slow down and define them.
-
-## First Principles
-
-When possible, explain concepts by reducing them to basic forces:
-
-- incentives
-- constraints
-- information
-- supply and demand
-- risk transfer
-- time
-- uncertainty
-- resource limits
-- coordination problems
-
-For market structure and trading topics, often ask:
-
-- Who wants to trade?
-- Why do they want to trade?
-- Who takes the other side?
-- What risk does that create?
-- How is that risk priced or hedged?
-- What information does the trade reveal?
-- Why might the price move?
-
-For programming and systems topics, often ask:
-
-- What problem does this abstraction solve?
-- What state exists?
-- Who can change that state?
-- What invariants must stay true?
-- What happens when inputs are large, missing, duplicated, delayed, or wrong?
-- What are the failure modes?
-
-## Misconceptions and Failure Modes
-
-When teaching an important concept, include common wrong intuitions.
-
-Use phrases like:
-
-```text
-A common mistake is to think...
-The subtle point is...
-This breaks down when...
-This is useful only if...
-```
-
-Explain why the misconception is tempting, then correct it.
-
-For example, do not only say that index additions can affect prices. Explain why: index-tracking funds may need to buy the added stock, the demand can arrive in a predictable window, liquidity providers may anticipate the flow, and the final price effect depends on liquidity, positioning, and how much of the flow was already expected.
-
-## Tradeoffs and Alternatives
-
-When recommending an approach, explain the tradeoff.
-
-A good answer should usually clarify:
-
-- what this approach makes easier
-- what it makes harder
-- what assumptions it relies on
-- when a different approach would be better
-
-Avoid presenting tools, patterns, or concepts as universally good. Most ideas are useful because they solve a particular problem under particular constraints.
-
-## Learning Checks
-
-For longer explanations, end with a short recap or a few questions the reader should now be able to answer.
-
-Examples:
-
-```text
-Recap: The key idea is that price impact is not just about whether news is good or bad. It is also about whether urgent demand overwhelms available liquidity at the current price.
-```
-
-```text
-You should now be able to explain why a passive index fund may trade even when it has no opinion about a company's value.
-```
-
-Do not overdo quizzes. Use them when they reinforce understanding. provide the answeres to those questions for me in 2 sentences, keep it short and concise. 
+For index mechanics, show the actual calculation: shares outstanding, float factor, float-adjusted market cap, weights, divisors, and corporate actions. For microstructure, name the venue and mechanism: order book, auction, spread, depth, adverse selection, and inventory risk.
 
 ## Code Explanations
 
-When explaining code, describe both the local behavior and the larger purpose.
+Explain what problem the code solves, its inputs and outputs, the important steps in order, its invariants, and its edge cases. Trace one small input through it. Explain why it was built this way, so the reader could change it safely. Do not paraphrase line by line.
 
-Prefer this order:
+## Sources and Precision
 
-1. What problem this code is solving.
-2. What inputs it receives.
-3. What output or side effect it produces.
-4. The important steps in order.
-5. Any invariants or assumptions.
-6. Edge cases and failure modes.
-7. Why this implementation was chosen.
+Read `SOURCES.md` before researching. Cite the specific document, post, or paper. Do not invent facts or citations. If a source could not be reached or verified, say so in the lesson or the reply.
 
-If useful, trace one small input through the code step by step.
+Distinguish a definition, a convention, a simplifying assumption, a stylized example, an empirical finding, and a prediction. If a result depends on context, name the variables it depends on.
 
-Do not only paraphrase the code line by line. Explain the reason the code exists and the mental model needed to modify it safely.
+## Answering in Chat
 
-## Writing Documentation
+For a narrow question, answer it directly first, then add the context that makes the answer useful. For a broad question, give a short orientation, then build up in layers. If the reader seems confused, use a smaller example rather than a longer explanation. End longer explanations with one or two check questions, and give the answers in about two sentences.
 
-When writing documentation in this repo, write for someone learning the idea for the first time.
-
-Good documentation should:
-
-- begin with motivation
-- define terms plainly
-- include at least one concrete example
-- explain the mechanism, not just the outcome
-- mention common confusion
-- separate facts from assumptions
-- prefer clarity over cleverness
-
-Documentation should feel like a patient tutor, not a compressed reference manual.
-
-## Mathematical and Quantitative Explanations
-
-When explaining formulas, introduce the idea before the notation.
-
-Use a small numerical example before generalizing. Explain what each variable represents and what changing it would mean.
-
-For example, before presenting a formula for index weight, explain that an index weight answers: "Out of the whole index, how much of the index's value comes from this one constituent?"
-
-Then show a tiny example with two or three constituents before moving to the general equation.
-
-## Market and Finance Explanations
-
-For market microstructure, index mechanics, and trading topics, focus on mechanisms rather than labels.
-
-Try to explain:
-
-- the participants involved
-- their incentives
-- what they need to buy or sell
-- when they need to trade
-- who provides liquidity
-- what risks are created
-- why prices may move
-- what would make the effect bigger or smaller
-
-Avoid saying only that "flows move markets." Explain the channel through which flows become price pressure. 
-
-## Where to get information
-
-Read `SOURCES.md` when researching or writing. Search those sites, cite the specific post or paper, and do not invent facts.
-
-## Domain Learning Goals
-
-This repo is specifically for building intuition about market microstructure, index mechanics, index flows, rebalancing, and flows trading.
-
-When explaining these topics, focus on desk-relevant intuition. The reader should learn to reason about markets through participants, incentives, constraints, timing, liquidity, and risk transfer.
-
-For market explanations, try to answer:
-
-1. What is the event, mechanism, or trading problem?
-2. Who are the participants?
-3. What does each participant want?
-4. Who is forced to trade, and who is choosing to trade?
-5. What is known in advance, and what is uncertain?
-6. What is the expected flow?
-7. How large is the flow relative to normal liquidity or volume?
-8. Where does liquidity come from?
-9. Who might anticipate the flow?
-10. Why might the price move?
-11. What could make the price effect temporary?
-12. What could make the price effect persistent?
-
-## Building Desk Intuition
-
-Do not only explain definitions. Explain how a trader might reason through the situation.
-
-For any flow, rebalance, or market-impact question, help the reader think through:
-
-- who the forced buyer or seller is
-- whether the flow is predictable
-- when the flow needs to happen
-- how crowded the trade might be
-- who is willing to take the other side
-- whether liquidity is natural or provided by arbitrageurs and dealers
-- what risks are being warehoused
-- how hedging could affect related instruments
-- where slippage could occur
-- what could cause reversal after the event
-
-When possible, separate mechanical flow from information. A price can move because traders learn something new, but it can also move because a large buyer or seller needs liquidity. Make clear which mechanism is being discussed.
-
-## Index Rebalance Explanations
-
-When explaining an index rebalance, walk through the timeline.
-
-A useful default structure is:
-
-1. The index methodology defines the rules.
-2. An announcement or estimation period reveals likely changes.
-3. Traders estimate additions, deletions, weight changes, and required shares.
-4. Passive funds and benchmarked managers prepare to trade.
-5. Liquidity providers, dealers, and arbitrageurs position around expected demand.
-6. Execution often concentrates near the close or auction.
-7. After the rebalance, temporary pressure may reverse, normalize, or persist depending on liquidity and positioning.
-
-Always distinguish between:
-
-- mechanical demand from index trackers
-- anticipatory trading before the rebalance
-- liquidity provision during execution
-- hedging in related instruments
-- fundamental information about the company
-- temporary price pressure
-- lasting repricing
-
-For index mechanics, explain the actual calculation when relevant. Include details such as shares outstanding, free float, float adjustment, investable market capitalization, index weights, divisors, adds, deletes, corporate actions, and implementation timing.
-
-For microstructure, explain the trading venue and execution mechanism when relevant. Include details such as order books, market orders, limit orders, spreads, depth, auctions, adverse selection, inventory risk, market impact, and liquidity fragmentation.
-
-## Uncertainty and Precision
-
-Be explicit about uncertainty.
-
-Distinguish between:
-
-- a definition
-- a convention
-- a simplifying assumption
-- a stylized example
-- an empirical claim
-- a prediction
-
-If an example is simplified, say what was simplified and why. If a real-world result depends on context, say which variables matter.
-
-## Interaction Style
-
-Be clear, patient, and direct. Do not be condescending. Do not hide behind jargon. Do not rush to the final answer when the learning path matters.
-
-When the reader asks a broad question, first give a short orientation, then build the explanation in layers.
-
-When the reader asks a narrow question, answer it directly, but still include enough context to make the answer useful.
-
-When the reader seems confused, slow down and use a smaller example.
-
-When the reader asks for a plan, break the work into small steps and recommend the next step.
-
-## Default Standard
-
-The best answer in this repository is not the shortest correct answer. The best answer is the one that helps the reader form a reliable mental model they can reuse later.
+The best answer here is not the shortest correct one. It is the one that leaves the reader with a mental model they can rebuild and reuse on their own.

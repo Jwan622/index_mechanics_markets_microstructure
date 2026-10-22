@@ -180,6 +180,25 @@ Key questions:
 
 Desk intuition: "price moved" is not the explanation. The explanation is the mechanism behind the move.
 
+## Case Study 4a: Jane Street in India and Bank Nifty Expiry
+
+Filename: `lesson_4a_jane_street_india_bank_nifty_expiry.md`
+
+This is a one-off case, not a new track. Do it after Lesson 4. It is an example of mechanical demand used on a settlement, not an index-add rebalance.
+
+Learning goal: see how a large cash and futures print can move a mechanically computed index so that much larger index-options positions pay off, and where a regulator draws the line between making a market and alleged manipulation.
+
+Cover SEBI's July 3, 2025 interim order (WTM/AN/MRD/MRD-SEC-3/31516/2025-26), the two-patch Bank Nifty expiry pattern, why weekly index options in India are large versus cash, how the case surfaced, the impound and ban, and that Jane Street disputes the findings.
+
+Key questions:
+
+- What was the trade, in cash, futures, and options?
+- Why can buying 12 bank stocks move Bank Nifty?
+- Why might a loss in cash and futures still be rational if options are larger?
+- What did SEBI call illegal, and what has Jane Street said in reply?
+
+Desk intuition: an index is a formula. If you can move the inputs near expiry, you move the settlement. Size versus the thin leg is the whole trade. Whether that is legal is a separate question from whether the mechanism works.
+
 ## Part 5: Dealers, Market Makers, and Risk Warehousing
 
 Filename: `lesson_5_dealers_market_makers_and_risk_warehousing.md`
@@ -270,6 +289,42 @@ Key questions:
 Math and technique: calculate market cap, float-adjusted market cap, and index weight for a three-stock toy index.
 
 Desk intuition: index methodology converts public company facts into target portfolio weights.
+
+## Research Module 9a: Reading the S&P 500 and Russell Rules
+
+Filename: `lesson_9a_sp500_and_russell_index_rules.md`
+
+This is a hands-on research module, not a new track. Do it after Lesson 9, once the vocabulary (float, market cap, eligibility screens) is familiar. Lesson 8 made the claim that index rules are public. This module checks that claim by reading the actual rulebooks for two index families that work very differently.
+
+Learning goal: read the primary methodology documents for the S&P 500 and the Russell US indexes (Russell 3000, 1000, and 2000), and turn the rules into a side-by-side comparison of who gets in, who gets out, how weights are set, and when the changes happen.
+
+Documents to read (primary sources only):
+
+- S&P U.S. Indices Methodology (S&P Dow Jones Indices)
+- S&P Dow Jones Indices Float Adjustment Methodology
+- FTSE Russell, Russell US Equity Indexes Construction and Methodology (ground rules)
+- FTSE Russell reconstitution calendar and any notices on the reconstitution schedule
+
+What to extract for each index:
+
+- Eligibility screens: domicile, security type, minimum price, minimum float, liquidity, profitability
+- Size rule: a fixed market-cap threshold, or a rank cutoff
+- Who decides: a committee with discretion, or a mechanical ranking
+- Turnover controls: buffers or bands around the cutoff
+- Weighting: how float adjustment is applied
+- Timing: rank date, announcement date, effective date, and how often the index is reviewed
+- What is known in advance, and what has to be estimated
+
+Key questions:
+
+- Why can traders predict Russell changes weeks ahead, but S&P 500 additions only probabilistically?
+- What does a committee's discretion do to the predictability of flow?
+- How does banding around the Russell 1000/2000 cutoff reduce turnover, and who still migrates?
+- Which rule would you check first if a stock just missed being added?
+
+Deliverable: a one-page comparison table, written in your own words, with a citation to the section of each methodology document behind every row.
+
+Desk intuition: "index rules are public" is only useful if you have read them. Small details, such as a buffer, a profitability test, or committee discretion, decide whether a flow can be forecast exactly, estimated, or only guessed.
 
 ## Part 10: Index Divisors, Corporate Actions, and Continuity
 

@@ -127,26 +127,26 @@ When a client needs to trade now, someone must take the risk. An agency broker s
 
 The client is flat. The dealer owns the shares and the price risk until it sells or hedges them away.
 
-2. Why does inventory create risk?
+1. Why does inventory create risk?
 
 The price can move before the dealer gets out. Larger size, more time, and higher volatility make that loss bigger.
 
-3. How might a dealer hedge that risk?
+1. How might a dealer hedge that risk?
 
 Sell or buy a related instrument — futures, an ETF, or peers — so market or sector moves hurt less. XYZ can still move against the leftover basis.
 
-4. Why does risk warehousing have a cost, and why might appetite fall in stress?
+1. Why does risk warehousing have a cost, and why might appetite fall in stress?
 
 The dealer uses capital and limits to hold a position that can lose money, so it charges a spread or concession. In stress those limits fill up, hedges get worse, and the firm takes less size at any given price.
 
 ## Sources
 
-Optiver. "Market Making." https://www.optiver.com/insights/explainers/market-making/
+Optiver. "Market Making." [https://www.optiver.com/insights/explainers/market-making/](https://www.optiver.com/insights/explainers/market-making/)
 
-Optiver. "Engineering the three pillars of trading: Pricing, risk, and execution." July 4, 2024. https://www.optiver.com/insights/technology-blog/engineering-the-three-pillars-of-trading-pricing-risk-and-execution/
+Optiver. "Engineering the three pillars of trading: Pricing, risk, and execution." July 4, 2024. [https://www.optiver.com/insights/technology-blog/engineering-the-three-pillars-of-trading-pricing-risk-and-execution/](https://www.optiver.com/insights/technology-blog/engineering-the-three-pillars-of-trading-pricing-risk-and-execution/)
 
-FINRA. "Compensation and Mixed Capacity Trading." https://www.finra.org/sites/default/files/NoticeDocument/p003505.pdf
+FINRA. "Compensation and Mixed Capacity Trading." [https://www.finra.org/sites/default/files/NoticeDocument/p003505.pdf](https://www.finra.org/sites/default/files/NoticeDocument/p003505.pdf)
 
-Ho, Thomas, and Hans R. Stoll. 1981. "Optimal Dealer Pricing under Transactions and Return Uncertainty." *Journal of Financial Economics* 9 (1): 47–73. https://doi.org/10.1016/0304-405x(81)90020-9
+Ho, Thomas, and Hans R. Stoll. 1981. "Optimal Dealer Pricing under Transactions and Return Uncertainty." *Journal of Financial Economics* 9 (1): 47–73. [https://doi.org/10.1016/0304-405x(81)90020-9](https://doi.org/10.1016/0304-405x(81)90020-9)
 
 Avellaneda, Marco, and Sasha Stoikov. 2008. "High-frequency Trading in a Limit Order Book." *Quantitative Finance* 8 (3): 217–224.
