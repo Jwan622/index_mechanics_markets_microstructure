@@ -85,6 +85,8 @@ Every eligible company is ranked by **total market cap** (all shares × the rank
 | Russell Midcap | 201 – 1,000 |
 | Russell Microcap | 2,001 – 4,000 |
 
+Lesson 9's section "What the Russell names mean" has the full list, including the Russell 3000E, the Top 200, and the Russell 2500, with a picture of how they overlap. The key point is that each name counts companies: the Russell 2000 is ranks 1,001–3,000, not 1–2,000.
+
 Members are then *weighted* by float-adjusted market cap, exactly as in Lesson 9's toy index. Ranking uses total cap. Weighting uses float-adjusted cap.
 
 ## Russell, Step 4: The Band Around the Cutoff
@@ -181,7 +183,7 @@ FTSE Russell's recap of the June 2025 reconstitution shows how much overlap the 
 | Smallest Russell 1000 member | Newell Brands | $2.0bn |
 | Largest Russell 2000 member | Ensign Group | $7.4bn |
 
-The largest company in the "small-cap" index was more than three times the size of the smallest company in the "large-cap" index. Without banding, that couldn't happen, because every Russell 1000 company would be bigger than every Russell 2000 company. With banding, the boundary between the two indexes is a zone rather than a line, and current members on either side of the zone stay where they are. (This is why Lesson 9 said a Russell 2000 company is smaller than any Russell 1000 company "apart from the band.")
+The largest company in the "small-cap" index was more than three times the size of the smallest company in the "large-cap" index. A year later the range had grown with the market: FTSE Russell's June 2026 article put the breakpoint at $5.7bn and the band at $2.7bn to $9.6bn, with 97 Russell 2000 and 111 Russell 1000 members kept in place by it (preliminary data). Without banding, that couldn't happen, because every Russell 1000 company would be bigger than every Russell 2000 company. With banding, the boundary between the two indexes is a zone rather than a line, and current members on either side of the zone stay where they are. (This is why Lesson 9 said a Russell 2000 company is smaller than any Russell 1000 company "apart from the band.")
 
 **Why is the real band so much wider than the worked example?** In the worked example, the band covered only a few dozen ranks on each side of 1,000: Birch at rank 960 was already outside it, and so was Dogwood at 1,060. In the real market it spans far more, because 2.5 points of *cumulative market cap* is a huge amount of value compared with the size of each company near the cutoff. A rough calculation with the 2025 recap's totals:
 
@@ -225,7 +227,7 @@ Applied to 2026. The June column is FTSE Russell's published schedule; the Decem
 | Preliminary lists | Fri 22 May | about Fri 13 Nov |
 | Effective | Fri 26 Jun | Fri 11 Dec |
 
-The December dates are worked out from Appendix F, not copied from a published calendar. 30 October is the last business day of October 2026, and 11 December is the second Friday of December. Check FTSE Russell's official notice before trading on them.
+The December dates follow from Appendix F: 30 October is the last business day of October 2026, and 11 December is the second Friday of December. Market commentary (New Street IR, October 2026) reports the same dates, with preliminary lists on 13 November. Check FTSE Russell's official notice before trading on them.
 
 **December is a smaller rebuild.** The December rebuild only handles new additions and moves between the Russell 1000, Russell 2000, and Microcap. Float changes are applied only if they are material, with a 3% buffer, and voting rights of existing members aren't re-checked. The full review of everything happens in June. So expect less turnover in December than in June.
 

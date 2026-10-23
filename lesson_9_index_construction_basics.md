@@ -317,14 +317,44 @@ Note the Russell detail: stocks are *ranked* by total market cap but *weighted* 
 
 Each word does work. *Total market cap* means price × all shares outstanding, before any float adjustment. *Rank day* is a single date on which FTSE Russell takes a snapshot of every eligible company's total market cap at that day's close. *Mechanical ranking* means it sorts those companies from largest to smallest and applies fixed cutoffs. Positions 1 to 1,000 go to the Russell 1000, and positions 1,001 to 3,000 go to the Russell 2000. Nobody votes. The rule is a sorting step that anyone with the same data could run.
 
-The names are misleading, so it's worth being exact. The numbers are **counts, not ranks**. The Russell 2000 is the *next* 2,000 companies after the top 1,000, so it does **not** include the Russell 1000. The two indexes never share a company. The Russell 3000 is simply both of them together.
+### What the Russell names mean
 
-| Rank by total cap | Russell 1000 | Russell 2000 | Russell 3000 |
-|---|---|---|---|
-| 1 – 1,000 | yes | no | yes |
-| 1,001 – 3,000 | no | yes | yes |
+The names are misleading, so it's worth being exact. **The number in the name is how many companies the index holds, not the last rank it reaches.** The Russell 2000 is *not* ranks 1–2,000. It is 2,000 companies: ranks 1,001 to 3,000.
 
-So the Russell 2000 is the small-cap index. Its *largest* member is smaller than the *smallest* member of the Russell 1000, apart from the band around the cutoff covered in Lesson 9a.
+Everything starts from one ranked list. On rank day, FTSE Russell sorts every eligible US company by total market cap. The largest 4,000 form the broadest index, the **Russell 3000E**, and every other Russell US index is a slice of that list. The rulebook (Section 6.10) defines the slices:
+
+| Index | Ranks | Companies | Segment |
+|---|---|---:|---|
+| Russell 3000E | 1 – 4,000 | 4,000 | the whole list |
+| Russell 3000 | 1 – 3,000 | 3,000 | broad market |
+| Russell 1000 | 1 – 1,000 | 1,000 | large and mid cap |
+| Russell 2000 | 1,001 – 3,000 | 2,000 | small cap |
+| Russell Microcap | 2,001 – 4,000 | 2,000 | micro cap |
+| Russell Top 200 | 1 – 200 | 200 | mega cap |
+| Russell Midcap | 201 – 1,000 | 800 | mid cap |
+| Russell 2500 | 501 – 3,000 | 2,500 | small and mid cap |
+
+The first five are the ones a flows desk meets most. As a picture, with rank increasing to the right (bigger companies on the left):
+
+```text
+rank:  1            1,000          2,000          3,000          4,000
+       |--------------|--------------|--------------|--------------|
+       [ Russell 1000 ][        Russell 2000        ]
+       [                Russell 3000                ]
+                                     [       Russell Microcap      ]
+       [                       Russell 3000E                       ]
+```
+
+Four things to read off it:
+
+1. **The Russell 1000 and Russell 2000 never share a company.** Together they make up the Russell 3000: 1,000 + 2,000 = 3,000.
+2. **The Russell 2000 and the Microcap *do* overlap.** Ranks 2,001–3,000 are the bottom half of the Russell 2000 *and* the top half of the Microcap. Here the name "Microcap" refers to size, and its count is again 2,000 (ranks 2,001–4,000).
+3. **The Russell 3000E is the Russell 3000 plus ranks 3,001–4,000.** Those extra 1,000 companies are the smallest ones, in the Microcap only.
+4. **Every index has its own funds.** A company at rank 1,500 sits in the Russell 2000, the Russell 3000, the Russell 2500, and the Russell 3000E at once. Any fund tracking any of those holds it.
+
+One caveat on the boundaries: the ranks in the table are where the lines fall for *new* companies. At the 1,000 boundary (and at 200, 500, and 2,000), current members get some room through the band described in "The rebuild and the band" below. At 3,000 and 4,000 the rulebook applies no band, so those lines are hard.
+
+So the Russell 2000 is the small-cap index. With a pure rank cutoff, every Russell 2000 company would be smaller than every Russell 1000 company. In practice the two overlap, because of a rule called the **band**, explained in "The rebuild and the band" below.
 
 A tiny version: suppose there were only five eligible companies and the "large-cap" index took the top two.
 
@@ -336,7 +366,7 @@ A tiny version: suppose there were only five eligible companies and the "large-c
 | S | $10 | 2,000m | $20bn | 4 | small-cap |
 | T | $45 | 300m | $13.5bn | 5 | small-cap |
 
-If R had closed at $80 on rank day instead of $60, its cap would be $32bn. It would rank second, move into the large-cap index, and push Q down. The rank-day closing price decides membership. (The real rules also have a band around the cutoff, so a stock near the line doesn't jump back and forth every year. Lesson 9a covers that detail.)
+If R had closed at $80 on rank day instead of $60, its cap would be $32bn. It would rank second, move into the large-cap index, and push Q down. The rank-day closing price decides membership. (This is the rule for a company that is *new* to the index. Current members near the cutoff are treated differently, as "The rebuild and the band" below explains.)
 
 ### The important dates
 
@@ -351,7 +381,7 @@ If R had closed at $80 on rank day instead of $60, its cap would be $32bn. It wo
 | Fri 26 Jun | **Reconstitution day** (effective) | Index funds trade in the closing auction, and the new index applies from this close. |
 | Mon 29 Jun | **First day of the new index** | Markets open with the reconstituted indexes. |
 
-So, to answer the obvious question directly: Russell does *not* announce additions on the last day of April. That day is when the *measurement* happens. The first official list comes about three weeks later, and the trade happens about two months later. In the past this happened once a year in June. Starting in December 2026, FTSE Russell will also run a December reconstitution, using a schedule it publishes separately.
+So, to answer the obvious question directly: Russell does *not* announce additions on the last day of April. That day is when the *measurement* happens. The first official list comes about three weeks later, and the trade happens about two months later. Until 2026 this happened once a year, in June. From 2026 there is a second rebuild each December: rank day is the last business day of October (30 October 2026), preliminary lists follow on 13 November, and the changes take effect after the close on 11 December 2026.
 
 **S&P 500:**
 
@@ -361,6 +391,58 @@ So, to answer the obvious question directly: Russell does *not* announce additio
 | At least 3 business days before the effective date | **Announcement** | S&P publishes the change on its website. The methodology requires at least three business days' notice, and the committee may give less. This is the first time the market knows for sure. |
 | After the close on the third Friday of March, June, September, and December | **Quarterly rebalance** | Share counts are updated, and many membership changes are timed to take effect then. Index funds trade in that day's closing auction. |
 | Any date | **Off-cycle change** | A merger, acquisition, or bankruptcy can trigger a replacement outside the quarterly schedule. |
+
+### The rebuild and the band
+
+Two words in the Russell rules need to be pinned down: *rebuild* and *band*.
+
+**The rebuild.** FTSE Russell calls it **reconstitution**: every company is re-ranked from scratch, and every index's membership is set again. It now happens twice a year:
+
+| Rebuild | Rank day | Effective | Reviews |
+|---|---|---|---|
+| June | last business day of April | 4th Friday of June | everything |
+| December | last business day of October | 2nd Friday of December | new adds and moves between indexes |
+
+Rank day is when caps are measured, and the effective date is when index funds trade at the close. The June rebuild is the full review. The December rebuild is lighter: under the rulebook (Appendix F), it handles new additions and moves between the Russell 1000, Russell 2000, and Microcap, but it only updates float for material changes and doesn't re-check existing members' voting rights. Between rebuilds, the only membership changes are quarterly IPO additions and corporate events such as mergers.
+
+**The band.** Yes, there is one. It is in Section 6.10 of the current rulebook (version 7.2, August 2026), which says a band is placed around the market-cap breakpoint "to avoid unnecessary turnover at reconstitution." The section applies to reconstitution in general, so it covers both rebuilds.
+
+The problem it solves: a company sitting right at rank 1,000 would otherwise flip between the Russell 1000 and Russell 2000 at every rebuild, as its rank wobbled between 995 and 1,005. Each flip forces a large index trade (see "Moving *up* from the Russell 2000 can mean being *sold*" below), even though the company barely changed.
+
+The rule treats new and current members differently:
+
+- A **new** company goes by the breakpoint alone: above it means Russell 1000, below it means Russell 2000.
+- A **current** member stays in its index as long as it is inside the band around the breakpoint. It only moves if it ends up clearly past the line.
+
+Technically the band is measured in *cumulative percentile of market cap* (±2.5 points). Lesson 9a works through that measure step by step. In practice, FTSE Russell translates it into a range of market caps. Its June 2026 article gives the real numbers:
+
+| June 2026 | Total market cap |
+|---|---:|
+| Breakpoint (new companies) | $5.7bn |
+| Bottom of band | $2.7bn |
+| Top of band | $9.6bn |
+
+(For comparison, in June 2025 the breakpoint was $4.6bn and the band ran from about $2.0bn to $7.4bn.)
+
+**Applying it.** Here are six made-up companies checked against the June 2026 numbers. Read each row as a question, "is it inside $2.7bn–$9.6bn?", and then apply the rule for new or current members:
+
+| Company | Status | Total cap | Result |
+|---|---|---:|---|
+| Spruce | current R2000 | $8.0bn | inside band → **stays R2000** |
+| Larch | current R2000 | $11.0bn | above band → moves to R1000 |
+| Hazel | current R1000 | $3.0bn | inside band → **stays R1000** |
+| Rowan | current R1000 | $2.2bn | below band → moves to R2000 |
+| Yew | new | $6.0bn | above $5.7bn → enters R1000 |
+| Holly | new | $5.0bn | below $5.7bn → enters R2000 |
+
+Look at Spruce and Holly. Spruce is *bigger* ($8.0bn) but stays in the small-cap index, while Holly is *smaller* ($5.0bn) and also lands in the small-cap index. Now compare Spruce with Yew: Spruce is bigger than Yew, yet Yew goes into the Russell 1000 and Spruce doesn't. The difference is only that Spruce is a current member, protected by the band, while Yew is new and judged by the breakpoint alone.
+
+This happens at real scale. FTSE Russell's preliminary June 2026 data showed 97 Russell 2000 members ranked above the breakpoint but kept in the Russell 2000 by the band, and 111 Russell 1000 members ranked below it but kept in the Russell 1000.
+
+Two consequences matter on a desk:
+
+1. **You need the current membership list, not just the ranking.** A ranking alone would put Spruce in the Russell 1000 and Hazel in the Russell 2000. Both would be wrong.
+2. **The indexes overlap in size.** In June 2026, a Russell 2000 company could be worth up to $9.6bn while a Russell 1000 company could be worth as little as $2.7bn.
 
 ### Why one is forecastable and the other isn't
 
@@ -405,7 +487,7 @@ What each column means:
 
 The key point is that **the slice depends on the ratio, not on the dollar amounts.** Less money tracks the Russell 2000, but the index is so much smaller that the money is a bigger fraction of it: 10% vs 2%.
 
-Now follow one company, Z, with $6bn of tradable value, as it moves up from the Russell 2000 to the Russell 1000.
+Now follow one company, Z, with $6bn of tradable value, as it moves up from the Russell 2000 to the Russell 1000. Because of the band, this move only happens once Z has grown clearly past the cutoff, above the top of the band, not the first time it edges past rank 1,000.
 
 **Step 1. What do Russell 2000 trackers hold today?** Their slice × Z's tradable value:
 
@@ -483,7 +565,7 @@ A related mistake is to treat rank day as an announcement. It is a measurement d
 
 ## Recap
 
-An index is a recipe: eligibility rules choose the members, and a weighting rule sets each member's share. Most major equity indexes weight by float-adjusted market cap, which is price × shares outstanding × float factor. The float factor removes shares held by strategic owners who are unlikely to sell. That way the index asks only for shares that can actually be bought. A float-adjusted cap-weighted fund owns the same percentage of every member's float. That makes flow estimates simple: indexed money as a share of the index's total float cap tells you roughly what share of a new member's float must be bought. Price moves don't force cap-weighted funds to trade, but changes to membership, shares, or float do. Equal-weighted indexes trade on every scheduled rebalance. The S&P 500 uses committee discretion on top of published screens. The Russell indexes rank mechanically, and that difference decides how far ahead a flow can be forecast. Because index funds own a fixed share of each member's float, weight relative to the index matters more than absolute size. A company moving up from the Russell 2000 to the Russell 1000 can face net passive selling.
+An index is a recipe: eligibility rules choose the members, and a weighting rule sets each member's share. Most major equity indexes weight by float-adjusted market cap, which is price × shares outstanding × float factor. The float factor removes shares held by strategic owners who are unlikely to sell. That way the index asks only for shares that can actually be bought. A float-adjusted cap-weighted fund owns the same percentage of every member's float. That makes flow estimates simple: indexed money as a share of the index's total float cap tells you roughly what share of a new member's float must be bought. Price moves don't force cap-weighted funds to trade, but changes to membership, shares, or float do. Equal-weighted indexes trade on every scheduled rebalance. The S&P 500 uses committee discretion on top of published screens. The Russell indexes rank mechanically at two rebuilds a year, and that difference decides how far ahead a flow can be forecast. Russell's band lets current members stay in their index while they are inside a range around the cutoff ($2.7bn to $9.6bn in June 2026), so predicting Russell moves needs the current membership list as well as the ranking. Because index funds own a fixed share of each member's float, weight relative to the index matters more than absolute size. A company moving up from the Russell 2000 to the Russell 1000 can face net passive selling.
 
 ## New Terms
 
@@ -515,7 +597,9 @@ An index is a recipe: eligibility rules choose the members, and a weighting rule
 
 **lock-down period**: The stretch before Russell reconstitution day during which membership is treated as final.
 
-**reconstitution**: A scheduled rebuild of an index's membership from scratch according to its rules.
+**reconstitution**: A scheduled rebuild of an index's membership from scratch according to its rules. For Russell, twice a year: June (full) and December (additions and migrations).
+
+**band**: A range around an index cutoff within which current members keep their index. New companies are judged by the cutoff alone.
 
 **reconstitution day**: The day the new Russell membership takes effect, at the close. Index funds trade in that day's closing auction.
 
@@ -552,6 +636,12 @@ Russell membership comes from a mechanical ranking on a known rank day, so anyon
 Trackers own a much bigger share of each member's float in the small index than in the big one, because the Russell 2000 is small relative to the money tracking it. The stock goes from a large weight in the Russell 2000 to a tiny weight in the Russell 1000, so Russell 2000 funds sell more than Russell 1000 funds buy.
 
 ## Sources
+
+FTSE Russell. "Russell US Equity Indexes: Construction and Methodology." v7.2, August 2026. Section 6.10 (banding) and Appendix F (reconstitution schedule). [https://www.lseg.com/content/dam/ftse-russell/en_us/documents/ground-rules/russell-us-indexes-construction-and-methodology.pdf](https://www.lseg.com/content/dam/ftse-russell/en_us/documents/ground-rules/russell-us-indexes-construction-and-methodology.pdf)
+
+Yoshimoto, Catherine. "Russell Reconstitution June 2026: Larger Leaders, Stronger Small Caps." FTSE Russell Insights, June 16, 2026. [https://www.lseg.com/en/insights/ftse-russell/russell-reconstitution-june-2026-larger-leaders-stronger-small-caps](https://www.lseg.com/en/insights/ftse-russell/russell-reconstitution-june-2026-larger-leaders-stronger-small-caps)
+
+New Street IR. "Russell Reconstitution Now Happens Twice a Year." October 14, 2026 (December 2026 dates). [https://newstreetir.com/2026/10/14/russell-reconstitution-now-happens-twice-a-year-what-does-that-mean-for-public-biotechs/](https://newstreetir.com/2026/10/14/russell-reconstitution-now-happens-twice-a-year-what-does-that-mean-for-public-biotechs/)
 
 S&P Dow Jones Indices. "S&P U.S. Indices Methodology." July 2026. Eligibility Criteria (pp. 7–11), Index Construction (p. 12), Timing of Changes, and Index Committee sections. [https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf](https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf)
 
