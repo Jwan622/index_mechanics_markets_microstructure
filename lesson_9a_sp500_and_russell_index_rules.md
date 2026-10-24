@@ -258,6 +258,7 @@ Given: a US company listed on Nasdaq, at $60 a share with 500m shares. Float fac
 **Step 1. Size.**
 
 > total market cap = $60 × 500m = **$30.0bn**
+>
 > float-adjusted cap = $30.0bn × 0.85 = **$25.5bn**
 
 | S&P 500 check | Rule | Northwind | Pass? |
@@ -304,7 +305,9 @@ Given: a US company at $120 a share. It has 200m listed class A shares with one 
 **S&P checks.** The S&P methodology has no voting-rights test. It sizes the company using all share classes, listed or not, and then evaluates each listed class separately.
 
 > total market cap = $120 × (200m + 100m) = **$36.0bn** (at least $22.7bn: passes)
+>
 > class A float-adjusted cap = $120 × 200m × 0.80 = **$19.2bn** (at least $11.35bn: passes)
+>
 > class A IWF = 0.80 (at least 0.10: passes)
 
 With profitability, liquidity, and seasoning given as passing, **Granite is an S&P 500 candidate but cannot enter any Russell index.**

@@ -64,13 +64,13 @@ Lesson 10 showed that a share issuance makes index funds buy, and that S&P's rul
 
 The S&P Policies & Practices document says a public offering gets **accelerated implementation** (applied within days, with one business day's notice for US stocks) if it is at least $150 million **and** at least 5% of the shares before the offering. Otherwise it waits for the quarterly share update. Then a separate paragraph adds an exception: events of **at least $1 billion** are accelerated *even if they are below the 5% threshold*.
 
-Written out as a decision:
+Written out as a decision, checked from the top down:
 
-```text
-offering ≥ $1bn                        -> accelerated
-else offering ≥ $150m AND ≥ 5% shares  -> accelerated
-else                                   -> next quarterly update (third Friday of Mar/Jun/Sep/Dec)
-```
+| Check | If yes |
+|---|---|
+| 1. Offering ≥ $1bn? | accelerated |
+| 2. Offering ≥ $150m **and** ≥ 5% of shares? | accelerated |
+| 3. Neither | next quarterly update (third Friday of Mar, Jun, Sep, Dec) |
 
 Now apply it. Harbor Corp is an S&P 500 member with 400m shares at $75 (a $30bn company) and a float factor of 1.00. Three possible offerings of new shares:
 

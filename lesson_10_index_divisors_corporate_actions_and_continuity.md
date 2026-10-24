@@ -6,6 +6,25 @@ An index level like "S&P 500 at 6,000" is meant to answer one question: *how muc
 
 The desk-relevant point is a distinction that is easy to blur. Some events change the divisor. Some events force index funds to trade. These are **two different questions with two different tests**, and the answers don't always match. A stock split changes neither. A share issuance changes both. A spin-off doesn't change the divisor on the day it happens, but it creates a forced sale later. Knowing which is which tells you where the flow is.
 
+## The Big Picture
+
+**Why we need an index level at all.** People want one number that answers "how did the market do today?" Funds are judged against that number (Lesson 8), and futures and options settle on it. To be useful, the number must have one property: **it should move only when prices move.** If S&P 500 stocks rise 1% on average, the index should rise exactly 1%, no more and no less.
+
+**What gets in the way.** The obvious number to publish is the total value of the companies in the index. But that total also changes for reasons that have nothing to do with prices: a company is added, another issues new shares, a third spins off a division. Published directly, the total would show fake gains and losses on those days.
+
+**The trick.** Publish the total *divided by* a number called the **divisor**. On a normal day the divisor stays fixed, so the level moves with prices. On a day when the total changes for a non-price reason, the provider changes the divisor by the same proportion, so the two changes cancel and the level doesn't jump.
+
+The lesson goes in four steps:
+
+| Step | What happens |
+|---|---|
+| 1. Build | level = total value ÷ divisor |
+| 2. Break | add a stock, and the level jumps for no reason |
+| 3. Fix | change the divisor so the level stays put |
+| 4. Apply | for each corporate action, ask: does the divisor change, and do index funds trade? |
+
+The fourth step is where the flows matter: the divisor is only the index's bookkeeping, but trades are real buying and selling.
+
 ## The Problem: A Sum of Values Jumps for the Wrong Reasons
 
 Use Lesson 9's three-stock toy index. Nothing has changed from Lesson 9:
@@ -22,6 +41,7 @@ Use Lesson 9's three-stock toy index. Nothing has changed from Lesson 9:
 The simplest possible "index" is just the total, $19.4bn. Now suppose the index adds stock D (also from Lesson 9: $40, 50m tradable shares, $2.0bn of tradable value) overnight, and no price moves.
 
 > total before = $19.4bn
+>
 > total after = $19.4bn + $2.0bn = $21.4bn
 
 The total rose 10.3%. But no stock went up, and nobody who held these stocks made any money. The jump came only from the list getting longer. A number that rises 10.3% when nothing happened is useless for measuring returns.
@@ -50,7 +70,9 @@ Check: $19.4bn ÷ $19.4m = 1,000.
 A rises 10%, from $50 to $55. Nothing else changes, and the divisor stays at $19.4m.
 
 > A's new value = 200m × $55 = $11.0bn
+>
 > new total = $11.0bn + $4.0bn + $5.4bn = $20.4bn
+>
 > new level = $20.4bn ÷ $19.4m = **1,051.5**
 
 The index rose 5.15%. **A second way to check it:** the index return should be the weighted average of member returns. A's weight was 51.5% (Lesson 9), and the other stocks returned 0%:
@@ -71,17 +93,34 @@ Go back to the starting point (level 1,000, divisor $19.4m) and add D overnight.
 
 Check: $21.4bn ÷ $21.4m = 1,000. The level opens where it closed.
 
-S&P's Index Mathematics Methodology writes the same adjustment in an equivalent "additive" form. The change in the divisor is the change in market value divided by the index level:
+S&P's Index Mathematics Methodology also writes the same adjustment in an "additive" form: instead of recomputing the divisor from the new total, you *add* a piece to the old divisor.
 
-> new divisor = old divisor + (change in value ÷ level) = $19.4m + ($2.0bn ÷ 1,000) = $19.4m + $2.0m = **$21.4m**
+> new divisor = old divisor + (change in value ÷ level)
 
-Both forms give $21.4m. The additive form is handy because each change, whether an add, a delete, or a share update, contributes its own piece, and the pieces can be summed.
+**Why this gives the same answer.** Start from the first form and split the new total into "old total + change":
+
+> new divisor = new total ÷ level
+
+> = (old total + change) ÷ level
+
+> = (old total ÷ level) + (change ÷ level)
+
+> = **old divisor** + (change ÷ level)
+
+The last line holds because old total ÷ level is exactly how the old divisor was defined. So the two forms are the same formula written two ways.
+
+**With the numbers:**
+
+> new divisor = $19.4m + ($2.0bn ÷ 1,000) = $19.4m + $2.0m = **$21.4m**
+
+That matches the first form. In words, the piece $2.0bn ÷ 1,000 = $2.0m is "how much the divisor must grow so that D's $2.0bn adds zero points to the level." The additive form is handy in practice because each change on a given night (an add, a delete, a share update) contributes its own piece, and the provider sums the pieces into one divisor change.
 
 ### Step 4. Confirm the new divisor measures returns correctly
 
 The next day, every stock rises 1%:
 
 > new total = $21.4bn × 1.01 = $21.614bn
+>
 > level = $21.614bn ÷ $21.4m = **1,010**
 
 That's up exactly 1% from 1,000. The new divisor keeps measuring price moves correctly with D included.
@@ -90,10 +129,23 @@ That's up exactly 1% from 1,000. The new divisor keeps measuring price moves cor
 
 S&P's methodology states it directly: any change that alters the index's total market value *while prices are held constant* requires a divisor adjustment. Price moves change the level. Everything else changes the divisor.
 
-```text
-price moves                      -> total changes -> level changes      (divisor fixed)
-membership, shares, float, etc.  -> total changes -> divisor changes    (level fixed)
-```
+| What happened | Total value | Divisor | Level |
+|---|---|---|---|
+| Prices moved | changes | fixed | **moves** |
+| Anything else | changes | **adjusted** | fixed |
+
+"Anything else" means membership changes, share issuance or buybacks, float changes, special dividends, and similar events.
+
+### Why this is the rule, not a matter of feel
+
+Picture an investor who holds the index exactly: every member, at its index weight. Then ask one question: **did that investor gain or lose money?**
+
+- **Yes, because prices moved.** The level should move by the same percentage. A rising A made the investor 5.15% richer, so the level rose 5.15%.
+- **No, the basket just changed.** When D is added, new money buys new shares; the investor's existing holdings are worth exactly what they were. When C issues shares, the new shares are paid for by new money. A split cuts the same value into more pieces. In all of these the total value changes (or, for a split, doesn't), but no holder's wealth changes, so the level must not move. If the total changed, the divisor absorbs it.
+
+That is the whole principle: **the level tracks the holder's gains and losses; the divisor absorbs everything else.** Each corporate action in this lesson is just this question applied to one event.
+
+There is one deliberate exception. On an **ordinary dividend**, the holder isn't poorer (they received the cash), but the *price* index still falls. That's a convention: regular dividends are counted separately, in the total return index, so the price index is defined to measure price change only. The total return index follows the principle exactly and doesn't move.
 
 ## The Second Question: Do Index Funds Have to Trade?
 
@@ -103,7 +155,26 @@ The divisor is bookkeeping for the index. Index funds don't hold the divisor; th
 
 Lesson 9 already showed the two basic cases. When A's price rises 10%, the fund's A shares rise 10% too, so its holdings still match the new weights and **no trade is needed**. When B's float factor rises, B's weight rises but the fund's B shares don't change, so it **must buy B**. Every corporate action below gets both tests: (1) does the divisor change, and (2) do funds trade?
 
-Each example starts from the same base: the toy index at level 1,000 with a $19.4m divisor, and Lesson 9's $1 billion fund holding
+### The starting numbers
+
+Every corporate action below starts from this same position. Come back to these two tables whenever a number in an example looks unfamiliar.
+
+**The index** (level 1,000, divisor $19.4m):
+
+| Stock | Price | Tradable shares | Tradable value |
+|---|---:|---:|---:|
+| A | $50 | 200m | $10.0bn |
+| B | $100 | 40m | $4.0bn |
+| C | $20 | 270m | $5.4bn |
+| **Total** | | | **$19.4bn** |
+
+Where these come from (Lesson 9):
+
+- **Tradable shares** = shares outstanding × float factor: A is 200m × 1.00, B is 100m × 0.40, and C is 300m × 0.90.
+- **Tradable value** = price × tradable shares: for example, C is $20 × 270m = $5.4bn.
+- **Divisor** = $19.4bn total ÷ 1,000 starting level = $19.4m.
+
+**The $1bn fund:**
 
 | Stock | Weight | Dollars held | Shares held |
 |---|---:|---:|---:|
@@ -111,11 +182,15 @@ Each example starts from the same base: the toy index at level 1,000 with a $19.
 | B | 20.6% | $206.2m | 2.062m |
 | C | 27.8% | $278.4m | 13.92m |
 
-(From Lesson 9: weight × $1bn, then ÷ price. The fund owns 5.155% of every stock's tradable shares, which is $1bn ÷ $19.4bn.)
+- **Weight** = tradable value ÷ $19.4bn: for example, C is $5.4bn ÷ $19.4bn = 27.8%.
+- **Dollars held** = weight × $1,000m. **Shares held** = dollars ÷ price.
+- The fund owns 5.155% of every stock's tradable shares, which is $1bn ÷ $19.4bn.
+
+Each example also states which side of the holder test it falls on: did someone holding the index gain or lose money (so the **level** moves), or did only the basket change (so the **divisor** absorbs it)?
 
 ## Corporate Action 1: Stock Split
 
-A does a 2-for-1 split: every A share becomes two shares, and the price halves.
+A does a 2-for-1 split: every A share becomes two shares, and the price halves. **Holder test:** nobody gains or loses, and the total doesn't even change.
 
 | | Before | After |
 |---|---:|---:|
@@ -133,14 +208,20 @@ A split is a change of units, like re-pricing a pizza by the slice instead of by
 
 C sells 30m new shares to the public at $20, raising $600m. All the new shares are tradable.
 
+**Holder test:** this is the "basket just changed" case. The buyers of the new shares pay $600m of new money for $600m of stock, and existing holders' shares are still worth $20 each. Nobody's wealth changes, but the total goes up by $600m, so **the divisor absorbs it**.
+
+C at the start (from the table above): $20 a share, 270m tradable shares, $5.4bn of tradable value. A ($10.0bn) and B ($4.0bn) don't change in this example.
+
 **Step 1. C's new tradable shares and value.**
 
 > tradable shares = 270m + 30m = 300m
+>
 > tradable value = 300m × $20 = **$6.0bn** (was $5.4bn)
 
 **Step 2. New total and divisor.**
 
-> new total = $10.0bn + $4.0bn + $6.0bn = **$20.0bn**
+> new total = A $10.0bn + B $4.0bn + C $6.0bn = **$20.0bn**
+>
 > new divisor = $20.0bn ÷ 1,000 = **$20.0m**
 
 Prices didn't move, the total did, so **the divisor changes** and the level stays at 1,000.
@@ -148,7 +229,9 @@ Prices didn't move, the total did, so **the divisor changes** and the level stay
 **Step 3. What must the fund hold now?** C's new weight is $6.0bn ÷ $20.0bn = 30.0%.
 
 > C target = 30.0% × $1,000m = $300.0m
+>
 > C held = $278.4m
+>
 > **buy C ≈ $21.6m** (about 1.08m shares at $20)
 
 **Step 4. Where does the money come from?** A and B didn't change, but the total grew, so their weights fell:
@@ -167,11 +250,26 @@ The sales ($15.5m + $6.2m = $21.7m, with rounding) pay for the purchase.
 
 Same answer.
 
-**When does this happen?** That depends on the rulebook. S&P's Policies & Practices document puts an offering on an *accelerated* track if it is at least $150 million **and** at least 5% of the shares before the offering. In that case S&P gives at least one business day's notice for US stocks. C's offering qualifies on both counts:
+**When does this happen?** First, what the size rule does *not* mean: it doesn't decide **whether** the index picks up the new shares. Every share change eventually gets into the index. The size rule only decides **when**.
+
+There are two tracks:
+
+| Track | Which offerings | When the index updates |
+|---|---|---|
+| Accelerated | at least $150m **and** at least 5% of shares | within days, with at least 1 business day's notice for US stocks |
+| Quarterly | everything smaller | the next quarterly update, after the close on the third Friday of March, June, September, or December |
+
+(S&P also accelerates any offering of at least $1 billion even if it is below 5%. Lesson 11 works through that exception.)
+
+**Why two tracks?** Companies change their share counts all the time: small issuances, employee stock grants, buybacks. If S&P updated the index for every one, index funds would trade a tiny amount in some stock nearly every day. Saving small changes for one quarterly date batches them into a single rebalance. A large offering is different. Leaving 10% more shares out of the index for up to three months would make the index visibly wrong about how much of the company is available to buy, so S&P applies it quickly.
+
+**C's offering.** It is checked against both tests:
 
 > $600m ≥ $150m, and 30m ÷ 300m = 10% ≥ 5%
 
-So index funds would buy C within days. A smaller issuance waits for the quarterly share update, after the close on the third Friday of March, June, September, or December. Lesson 11 shows how this kind of timing clause changes when the flow arrives.
+It passes both, so it goes on the accelerated track, and index funds buy C's extra $21.6m within days of the offering.
+
+**A smaller version.** Suppose instead C sold 6m new shares at $20, which is $120m and 6m ÷ 300m = 2% of its shares. That fails both tests, so it goes on the quarterly track. If the offering happened in July, the index would ignore the new shares until the September update. On the third Friday of September, after the close, the index would add them, and index funds would buy their slice in that day's closing auction. Same kind of trade, just smaller and later.
 
 A **buyback** is the mirror image: fewer shares, a lower tradable value, a smaller divisor, and **funds sell** the stock to match.
 
@@ -179,10 +277,14 @@ A **buyback** is the mirror image: fewer shares, a lower tradable value, a small
 
 A pays its regular dividend of $1 a share. On the **ex-dividend date** (the first day the stock trades without the right to that dividend), assume A's price drops by exactly the dividend, from $50 to $49, and nothing else moves. That is a simplifying assumption. Real prices move for other reasons on the same day.
 
+**Holder test:** holders lose $1 a share in price but receive $1 in cash, so their wealth is unchanged. This is the one convention-based exception: the *price* index lets the level fall anyway, and the total return index puts the dividend back.
+
 **Divisor?** S&P's rule for ordinary cash dividends is to adjust neither the price nor the shares, so **no divisor change**. The price index simply falls:
 
 > A's value = 200m × $49 = $9.8bn
+>
 > new total = $9.8bn + $4.0bn + $5.4bn = $19.2bn
+>
 > price index level = $19.2bn ÷ $19.4m = **989.7** (down 1.03%)
 
 That 1.03% drop is not a loss to investors. They received the dollar in cash. This is why Lesson 9 said funds are compared with the **total return** index, which puts the dividend back.
@@ -221,10 +323,14 @@ The buys add up to $10.3m, the cash received. **So an ordinary dividend causes a
 
 B pays a one-time **special dividend** of $10 a share, much larger than its usual payout. Assume B's price drops from $100 to $90 on the ex-date.
 
+**Holder test:** holders lose $10 a share in price and receive $10 in cash, so their wealth is unchanged. Here S&P follows the principle in the price index too: the divisor absorbs the drop.
+
 **Divisor?** S&P's rule is different here. For a special dividend, the stock price is adjusted by the dividend amount and **the divisor changes**:
 
 > B's value = 40m × $90 = $3.6bn
+>
 > new total = $10.0bn + $3.6bn + $5.4bn = $19.0bn
+>
 > new divisor = $19.0bn ÷ 1,000 = **$19.0m**
 
 The **price index stays at 1,000**. Compare this with the ordinary dividend, where the price index fell. The treatment is a convention: regular dividends are treated as income, captured only in the total return index, while one-off special dividends are taken out of the price index through the divisor.
@@ -243,10 +349,14 @@ The **price index stays at 1,000**. Compare this with the ordinary dividend, whe
 
 A spins off a division as a new company, A-Sub. A shareholders receive 1 A-Sub share for every 4 A shares, so 200m ÷ 4 = 50m A-Sub shares are created. Assume that after the spin-off, A trades at $45 and A-Sub at $20.
 
+**Holder test:** holders swap $50 of A for $45 of A plus a quarter of an A-Sub share (worth $5), so their wealth is unchanged. The level shouldn't move.
+
 **Step 1. Value is split, not created.**
 
 > A: 200m × $45 = $9.0bn
+>
 > A-Sub: 50m × $20 = $1.0bn
+>
 > together = **$10.0bn**, the same as A before
 
 (Assuming the market values the two pieces at exactly what A was worth. In practice the sum can differ a little.)
@@ -258,6 +368,7 @@ A spins off a division as a new company, A-Sub. A shareholders receive 1 A-Sub s
 **Step 3. Later: the spin-off is usually removed.** S&P keeps the spin-off in the index for at least one trading day. If it doesn't meet the index's rules, as is likely for a $1.0bn company in an index whose entry threshold is $22.7bn, it is then deleted. Its weight is reinvested across the other members in proportion.
 
 > new total = $19.4bn − $1.0bn = $18.4bn
+>
 > new divisor = $18.4bn ÷ 1,000 = **$18.4m** (the divisor changes now)
 
 **Fund trade at deletion?** Yes. The fund must **sell all 2.58m A-Sub shares ($51.5m)** and reinvest the cash across A, B, and C.
@@ -268,7 +379,31 @@ The desk angle: *every* fund tracking the index sells A-Sub at the same close. T
 
 Takeovers are handled case by case, so this section explains the mechanism in words rather than numbers.
 
-**Cash takeover of a member.** An outside buyer pays cash for all of C. S&P removes C around the date it stops trading. The total falls, so **the divisor changes**. Index funds end up with cash for their C shares and, because a seat is now empty, must **buy whichever company replaces C**. The addition is a separate forced purchase.
+**Cash takeover of a member.** An outside buyer offers $25 a share in cash for all of C, which trades at $20. Follow it in three stages, applying the holder test ("did someone holding the index gain or lose money?") at each one. The prices are stylized.
+
+**Stage 1. The announcement: the level moves.** C jumps to $24.50, a little below the $25 offer because the deal could still fail. That jump is a real gain for anyone holding C, so the divisor stays at $19.4m and the level rises:
+
+> C's value = 270m × $24.50 = $6.615bn
+>
+> total = $10.0bn + $4.0bn + $6.615bn = $20.615bn
+>
+> level = $20.615bn ÷ $19.4m = **1,062.6** (up 6.26%)
+
+**Stage 2. The deal closes: the divisor changes.** C ends at $25, so the level is $20.75bn ÷ $19.4m = 1,069.6. Then S&P removes C, around the date it stops trading. Holders hand over their C shares and receive $25 each in cash, so nobody's wealth changes. The total drops by C's $6.75bn, and the divisor absorbs it:
+
+> new total = $20.75bn − $6.75bn = $14.0bn
+>
+> new divisor = $14.0bn ÷ 1,069.6 = **$13.09m**, and the level stays at 1,069.6
+
+**Stage 3. The replacement: funds trade.** The $1bn fund (now worth $1,069.6m after C's rise) receives 13.92m × $25 = **$348m in cash** for its C shares. The empty seat is filled by a new company, E, with $5.0bn of tradable value. The divisor changes again to keep the level steady, and the fund must buy E and top up A and B at the new weights (total $19.0bn):
+
+| Stock | New weight | Target | Buy |
+|---|---:|---:|---:|
+| E | 5.0 / 19.0 = 26.3% | $281.5m | $281.5m |
+| A | 10.0 / 19.0 = 52.6% | $562.9m | $47.5m |
+| B | 4.0 / 19.0 = 21.1% | $225.2m | $19.0m |
+
+The buys add up to $348m, the cash received. So a cash takeover moves the level once, on the announcement, when holders genuinely gain. The divisor changes twice: when C leaves and when E arrives. And it forces one big trade: buying the replacement, which is often a larger flow than anything that happened in C itself.
 
 **Stock-for-stock merger between two members.** A buys C and pays in new A shares. S&P's Policies & Practices document says the acquirer's share increase is implemented at the same time as the target is dropped. The fund's C shares are swapped for A shares by the deal itself. Since the total value roughly carries over from C to the larger A, **the divisor change is small, and index funds trade little or nothing**. The deal does their rebalancing for them.
 
@@ -289,7 +424,7 @@ Each row was worked through above (or in Lesson 9 for the first rows).
 | Special dividend | Yes | Yes: reinvest cash |
 | Spin-off, day one | No | No (shares arrive) |
 | Spin-off removed later | Yes | Yes: sell the spin-off |
-| Cash takeover | Yes | Yes: buy the replacement |
+| Cash takeover | Yes (at removal) | Yes: buy the replacement |
 | Stock merger, both members | Small | Little or none |
 
 The divisor answers *"did the index's total value change for a reason other than price?"* The trade test answers *"do the fund's holdings still match the target without doing anything?"* Read down the table and you'll find every combination: neither (split), both (issuance), divisor only (stock merger, roughly), and trade only (ordinary dividend reinvestment).
@@ -352,9 +487,9 @@ The price falls to a third and the share count triples, so the stock's value and
 
 They receive cash, which the index doesn't hold. To keep tracking the total return index, they reinvest that cash across all members at the index weights.
 
-4. A member issues new shares worth 3% of its share count, raising $500m. When do S&P 500 funds buy?
+4. A member issues new shares worth 3% of its share count, raising $500m. Does the index ever pick up those shares, and when do S&P 500 funds buy?
 
-The offering meets the $150m test but not the 5% test, so it doesn't get accelerated treatment. The share change waits for the next quarterly update, after the close on the third Friday of the quarter's last month, and funds buy then.
+Yes, the index always picks them up; size only sets the timing. This offering meets the $150m test but not the 5% test (and is under $1bn), so it isn't accelerated. The share change waits for the next quarterly update, after the close on the third Friday of the quarter's last month, and funds buy then.
 
 5. Why is a spin-off often followed by selling pressure in the new company?
 

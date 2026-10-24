@@ -88,6 +88,8 @@ These are real failures from writing Lessons 8 and 9. Each row is a pattern to a
 | Showed total-cap weights of 38.5% in a comparison table with no calculation | "Why is total cap 38.5%?" | Every number needs a visible source. Show what each scheme divides by. |
 | Jumped from the float change straight to a table of new holdings ($313m) | "I think you skipped a few steps. Show B." | Derive one row fully (new tradable value → new total → new weight → new holding → trade) before the summary table, then check it a second way. |
 | Said "the Russell 2000 has twice as many companies but is smaller" | "Does the Russell 2000 include the 1000? How can it be smaller?" | When a name suggests a relationship that isn't there (2000 > 1000, so it must contain it), state what the name does and doesn't mean, with a membership table. |
+| Opened lesson 10 with the divisor mechanics and no overview | "I don't understand what we're doing at a high level." | Before any machinery, say in three or four sentences why the thing exists, what goes wrong without it, and the trick that fixes it. Then give a short roadmap of the steps. |
+| Said an offering "goes on an accelerated track if it is at least $150m and 5%" | "So it only rebalances if the offering is that big?" | When a rule sets *timing*, say explicitly what it does not decide (whether it happens), give both branches side by side, explain why the rule exists, and work an example of the other branch. |
 | Space-aligned tables in code blocks; a six-column table | "I can't read this." | Use pipe tables with at most 4–5 short columns. Put long working below the table. |
 
 ## Worked Calculations
@@ -132,7 +134,7 @@ Write in a natural tutor's voice. Avoid filler such as "Let's dive into", "It is
 - Start with a single `#` title, then `## Learning Goal`, which explains in prose what the reader learns and why it matters on a desk.
 - Choose middle sections that fit the topic. Use headers to make the material easier to follow, not to fill a template.
 - End with `## Recap` in paragraph form, then `## New Terms` with plain definitions, then `## Questions to Test Yourself`, each answered in about two sentences, then `## Sources`.
-- Formatting for `glow -t`: use pipe tables with numeric columns right-aligned and at most 4–5 short columns. glow truncates long headers with "…", so keep each header to one or two words (about 15 characters). Explain what each column means in a short list under the table instead of in the header. Keep code blocks for one-line formulas and arrow diagrams. Never put tables inside code blocks.
+- Formatting for `glow -t`: use pipe tables with numeric columns right-aligned and at most 4–5 short columns. glow truncates long headers with "…", so keep each header to one or two words (about 15 characters). Explain what each column means in a short list under the table instead of in the header. Keep code blocks for one-line formulas and short arrow diagrams, and keep every code-block line under 70 characters: glow wraps longer lines and breaks the alignment. If a diagram needs side notes, make it a table instead. Never put tables inside code blocks. When a calculation takes several lines, put each line in a blockquote and separate them with a bare `>` line. Consecutive `> ` lines without one merge into a single paragraph when rendered.
 - Use diagrams when they make structure visible, such as a flow, a timeline, or a feedback loop. Do not add them for decoration.
 
 ## Markets: What Every Explanation Should Answer
