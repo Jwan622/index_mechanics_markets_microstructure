@@ -4,7 +4,16 @@
 
 An index level like "S&P 500 at 6,000" is meant to answer one question: *how much have prices moved?* But the stocks inside the index keep changing. Companies are added and removed, they issue shares, split their stock, pay dividends, and spin off divisions. Each of these changes the index's total market value even when no price moved. This lesson explains the **divisor**, the number index providers adjust so that only price moves change the index level. It then goes through the common corporate actions one at a time.
 
-The desk-relevant point is a distinction that is easy to blur. Some events change the divisor. Some events force index funds to trade. These are **two different questions with two different tests**, and the answers don't always match. A stock split changes neither. A share issuance changes both. A spin-off doesn't change the divisor on the day it happens, but it creates a forced sale later. Knowing which is which tells you where the flow is.
+The desk-relevant point is a distinction that is easy to blur. "Does the divisor change?" and "do index funds have to trade?" are **two separate questions with two different tests**, and every combination of answers happens:
+
+| Event | Divisor changes? | Funds trade? |
+|---|---|---|
+| Share issuance | yes | yes (both) |
+| Stock split | no | no (neither) |
+| Stock merger between two members | yes, slightly | little or none |
+| Ordinary dividend | no | yes, a small reinvestment |
+
+A spin-off is the odd one: nothing on the day it happens, then a forced sale a day or more later. Knowing which combination an event produces tells you where the flow is.
 
 ## The Big Picture
 
@@ -83,47 +92,20 @@ Both routes agree. When the divisor stays fixed, the level moves exactly with pr
 
 ### Step 3. Adding a stock changes the divisor, not the level
 
-Go back to the starting point (level 1,000, divisor $19.4m) and add D overnight.
+Go back to the start (level 1,000, divisor $19.4m) and add stock D overnight. **D is worth $2.0bn**: $40 a share × 50m tradable shares. The total becomes $19.4bn + $2.0bn = $21.4bn.
 
-**Without adjusting:** $21.4bn ÷ $19.4m = 1,103.1, a fake 10.3% jump.
+| | Divisor | Level |
+|---|---:|---:|
+| Don't adjust | $19.4m | $21.4bn ÷ $19.4m = 1,103 (a fake +10.3%) |
+| Adjust | $21.4bn ÷ 1,000 = **$21.4m** | $21.4bn ÷ $21.4m = **1,000** |
 
-**With adjusting:** choose a new divisor that keeps the level at 1,000 with the new total:
+The fix is to pick the divisor that keeps the level where it was: new total ÷ old level. In other words, the divisor grows by the same 10.3% as the total, so the two cancel.
 
-> new divisor = new total ÷ old level = $21.4bn ÷ 1,000 = **$21.4m**
+(S&P's methodology writes this as old divisor + added value ÷ level, which is $19.4m + $2.0bn ÷ 1,000 = $21.4m. It's the same answer.)
 
-Check: $21.4bn ÷ $21.4m = 1,000. The level opens where it closed.
+### Step 4. Check that it still measures returns
 
-S&P's Index Mathematics Methodology also writes the same adjustment in an "additive" form: instead of recomputing the divisor from the new total, you *add* a piece to the old divisor.
-
-> new divisor = old divisor + (change in value ÷ level)
-
-**Why this gives the same answer.** Start from the first form and split the new total into "old total + change":
-
-> new divisor = new total ÷ level
-
-> = (old total + change) ÷ level
-
-> = (old total ÷ level) + (change ÷ level)
-
-> = **old divisor** + (change ÷ level)
-
-The last line holds because old total ÷ level is exactly how the old divisor was defined. So the two forms are the same formula written two ways.
-
-**With the numbers:**
-
-> new divisor = $19.4m + ($2.0bn ÷ 1,000) = $19.4m + $2.0m = **$21.4m**
-
-That matches the first form. In words, the piece $2.0bn ÷ 1,000 = $2.0m is "how much the divisor must grow so that D's $2.0bn adds zero points to the level." The additive form is handy in practice because each change on a given night (an add, a delete, a share update) contributes its own piece, and the provider sums the pieces into one divisor change.
-
-### Step 4. Confirm the new divisor measures returns correctly
-
-The next day, every stock rises 1%:
-
-> new total = $21.4bn × 1.01 = $21.614bn
->
-> level = $21.614bn ÷ $21.4m = **1,010**
-
-That's up exactly 1% from 1,000. The new divisor keeps measuring price moves correctly with D included.
+Next day, every stock rises 1%. The total is $21.4bn × 1.01 = $21.614bn, and the level is $21.614bn ÷ $21.4m = **1,010**, up exactly 1%.
 
 ### The rule in one sentence
 
@@ -154,6 +136,16 @@ The divisor is bookkeeping for the index. Index funds don't hold the divisor; th
 > **A fund must trade when its target holdings change in a way its current holdings don't follow automatically.**
 
 Lesson 9 already showed the two basic cases. When A's price rises 10%, the fund's A shares rise 10% too, so its holdings still match the new weights and **no trade is needed**. When B's float factor rises, B's weight rises but the fund's B shares don't change, so it **must buy B**. Every corporate action below gets both tests: (1) does the divisor change, and (2) do funds trade?
+
+So there are really **three separate questions**, and each has its own test:
+
+| Question | Test |
+|---|---|
+| Does the level move? | Did an index holder gain or lose money? |
+| Does the divisor change? | Did the total change for a non-price reason? |
+| Does the fund trade? | Do its holdings stop matching the target? |
+
+The answers can come in any combination. In a share issuance, the level stays flat and the divisor changes, *and* the fund still has to buy. In a price move, the level moves, the divisor stays put, and the fund does nothing. Knowing the answer to one question tells you nothing about the others, so ask all three.
 
 ### The starting numbers
 
@@ -252,14 +244,20 @@ Same answer.
 
 **When does this happen?** First, what the size rule does *not* mean: it doesn't decide **whether** the index picks up the new shares. Every share change eventually gets into the index. The size rule only decides **when**.
 
-There are two tracks:
+There are two tracks. This is how S&P's Policies & Practices document (August 2026) sets them out for public offerings:
 
 | Track | Which offerings | When the index updates |
 |---|---|---|
-| Accelerated | at least $150m **and** at least 5% of shares | within days, with at least 1 business day's notice for US stocks |
-| Quarterly | everything smaller | the next quarterly update, after the close on the third Friday of March, June, September, or December |
+| Accelerated | at least $150m **and** at least 5% of shares, or any size of $1bn or more | soon after S&P confirms the offering is complete, announced with at least 1 business day's notice for US stocks |
+| Quarterly | everything else | the next quarterly update, after the close on the third Friday of March, June, September, or December |
 
-(S&P also accelerates any offering of at least $1 billion even if it is below 5%. Lesson 11 works through that exception.)
+Three details in that rule are easy to miss:
+
+- **Size isn't the only condition.** To be accelerated, the offering must also be underwritten (a bank sells it), have a public prospectus, and be publicly confirmed as completed. A large offering that is still in progress waits until it's confirmed.
+- **"Accelerated" has no fixed number of days.** The rule sets a minimum notice period, not a deadline. In practice the change follows the offering closely, but the exact effective date is whatever S&P announces.
+- **Some events are accelerated at any size.** Dutch auctions, self-tender buybacks (where the company offers to buy shares directly from holders), and split-off exchange offers all get accelerated treatment once the final results are confirmed. The $1bn exception is worked through in Lesson 11.
+
+**And the funds?** The index doesn't make them trade. Funds trade because they want to match the index. A fund that buys at the same moment the index changes has no tracking error from the event, so index funds buy in the closing auction on the effective date S&P announces (Lessons 7 and 8). In practice, then, yes: when the index updates within days, the funds trade within days too, at that close.
 
 **Why two tracks?** Companies change their share counts all the time: small issuances, employee stock grants, buybacks. If S&P updated the index for every one, index funds would trade a tiny amount in some stock nearly every day. Saving small changes for one quarterly date batches them into a single rebalance. A large offering is different. Leaving 10% more shares out of the index for up to three months would make the index visibly wrong about how much of the company is available to buy, so S&P applies it quickly.
 

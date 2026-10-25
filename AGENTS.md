@@ -90,6 +90,7 @@ These are real failures from writing Lessons 8 and 9. Each row is a pattern to a
 | Said "the Russell 2000 has twice as many companies but is smaller" | "Does the Russell 2000 include the 1000? How can it be smaller?" | When a name suggests a relationship that isn't there (2000 > 1000, so it must contain it), state what the name does and doesn't mean, with a membership table. |
 | Opened lesson 10 with the divisor mechanics and no overview | "I don't understand what we're doing at a high level." | Before any machinery, say in three or four sentences why the thing exists, what goes wrong without it, and the trick that fixes it. Then give a short roadmap of the steps. |
 | Said an offering "goes on an accelerated track if it is at least $150m and 5%" | "So it only rebalances if the offering is that big?" | When a rule sets *timing*, say explicitly what it does not decide (whether it happens), give both branches side by side, explain why the rule exists, and work an example of the other branch. |
+| Derived S&P's equivalent "additive" divisor formula over five lines, and used D without restating its size | "How big is D? Too much." | Step-by-step doesn't mean exhaustive. Restate the key input (D = $2.0bn) right where it's used, derive the main path only, and give equivalent alternative forms in one parenthetical line. |
 | Space-aligned tables in code blocks; a six-column table | "I can't read this." | Use pipe tables with at most 4–5 short columns. Put long working below the table. |
 
 ## Worked Calculations
