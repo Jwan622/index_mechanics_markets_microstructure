@@ -198,7 +198,7 @@ optimization      -> fewest holdings for a target error, depends on the model
 
 Three facts about passive trading make it predictable.
 
-The rules are public. Index providers publish their methodologies. Lessons 9 through 13 cover how they work, and Research Module 9a reads the actual S&P 500 and Russell rulebooks. Traders can often estimate index changes before they are announced, and they know them exactly once they are.
+The rules are public. Index providers publish their methodologies. Lessons 9 through 13 cover how they work, and Lesson 11 reads the actual S&P 500 and Russell rulebooks. Traders can often estimate index changes before they are announced, and they know them exactly once they are.
 
 The timing is fixed. The index applies a change at a known effective date, usually at that day's close. A fund that wants zero tracking error trades in that closing auction, because that is the price the index uses.
 

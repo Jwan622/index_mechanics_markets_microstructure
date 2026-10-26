@@ -290,42 +290,6 @@ Math and technique: calculate market cap, float-adjusted market cap, and index w
 
 Desk intuition: index methodology converts public company facts into target portfolio weights.
 
-## Research Module 9a: Reading the S&P 500 and Russell Rules
-
-Filename: `lesson_9a_sp500_and_russell_index_rules.md`
-
-This is a hands-on research module, not a new track. Do it after Lesson 9, once the vocabulary (float, market cap, eligibility screens) is familiar. Lesson 8 made the claim that index rules are public. This module checks that claim by reading the actual rulebooks for two index families that work very differently.
-
-Learning goal: read the primary methodology documents for the S&P 500 and the Russell US indexes (Russell 3000, 1000, and 2000), and turn the rules into a side-by-side comparison of who gets in, who gets out, how weights are set, and when the changes happen.
-
-Documents to read (primary sources only):
-
-- S&P U.S. Indices Methodology (S&P Dow Jones Indices)
-- S&P Dow Jones Indices Float Adjustment Methodology
-- FTSE Russell, Russell US Equity Indexes Construction and Methodology (ground rules)
-- FTSE Russell reconstitution calendar and any notices on the reconstitution schedule
-
-What to extract for each index:
-
-- Eligibility screens: domicile, security type, minimum price, minimum float, liquidity, profitability
-- Size rule: a fixed market-cap threshold, or a rank cutoff
-- Who decides: a committee with discretion, or a mechanical ranking
-- Turnover controls: buffers or bands around the cutoff
-- Weighting: how float adjustment is applied
-- Timing: rank date, announcement date, effective date, and how often the index is reviewed
-- What is known in advance, and what has to be estimated
-
-Key questions:
-
-- Why can traders predict Russell changes weeks ahead, but S&P 500 additions only probabilistically?
-- What does a committee's discretion do to the predictability of flow?
-- How does banding around the Russell 1000/2000 cutoff reduce turnover, and who still migrates?
-- Which rule would you check first if a stock just missed being added?
-
-Deliverable: a one-page comparison table, written in your own words, with a citation to the section of each methodology document behind every row.
-
-Desk intuition: "index rules are public" is only useful if you have read them. Small details, such as a buffer, a profitability test, or committee discretion, decide whether a flow can be forecast exactly, estimated, or only guessed.
-
 ## Part 10: Index Divisors, Corporate Actions, and Continuity
 
 Filename: `lesson_10_index_divisors_corporate_actions_and_continuity.md`
@@ -346,37 +310,42 @@ Math and technique: work through a simple divisor adjustment after a stock split
 
 Desk intuition: some index changes are accounting adjustments, while others force portfolios to buy or sell.
 
-## Part 11: Official Index Methodology Documents
+## Part 11: Reading the Index Rulebooks
 
 Filename: `lesson_11_official_index_methodology_documents.md`
 
-Learning goal: learn how to read the documents that determine index membership and rebalance flow.
+Learning goal: learn to read the documents that determine index membership and rebalance flow, then apply the S&P 500 and Russell rulebooks to real-looking companies.
 
-Cover methodology guides, ground rules, eligibility criteria, buffer rules, review calendars, announcement dates, implementation dates, free-float rules, liquidity screens, investability screens, country classification, and treatment of corporate actions.
+This lesson absorbed the former Research Module 9a. Lesson 9 teaches what an index is and why funds trade. Lesson 10 teaches index math. Lesson 11 teaches how to read the rules that drive both.
+
+Cover:
+
+- The method: the document chain (main methodology plus supporting documents), seven questions to answer for any index, and four kinds of sentences (hard rules, discretion clauses, timing clauses, exceptions).
+- The S&P 500 rulebook: the full entry checklist, rules that apply only to new entrants, announcement timing, the Index Committee and whether its choices can be predicted, and the share-offering timing rule with its $1 billion exception.
+- The Russell rulebook: country assignment, eligibility screens (price, size, float, voting rights), ranking by total market cap, the band around the cutoff (in dollars and in cumulative percentile), and the June and December rebuild calendar.
+- Both rulebooks applied to worked companies, and a one-page comparison table with section citations.
+- Other families' turnover controls (MSCI, CRSP), what is announced versus what must be inferred, linking funds to indexes, and keeping up with rule changes.
 
 Documents and sources to study:
 
-- FTSE Russell US Equity Indexes Ground Rules
-- Russell US Indexes annual reconstitution methodology and calendar
-- S&P U.S. Indices Methodology
-- S&P Dow Jones Indices Index Mathematics Methodology
+- S&P U.S. Indices Methodology; S&P Index Mathematics Methodology; S&P Equity Indices Policies & Practices; S&P Float Adjustment Methodology
+- FTSE Russell US Equity Indexes Construction and Methodology, the reconstitution calendar, and FTSE Russell reconstitution recaps
 - MSCI Global Investable Market Indexes Methodology
-- MSCI Global Investable Market Indexes methodology booklets and corporate events methodology
-- CRSP US Equity Indexes methodology, especially because Vanguard uses CRSP indexes for some funds
-- Vanguard fund documents and benchmark descriptions for understanding what index a fund tracks
-- BlackRock iShares ETF prospectuses, holdings files, and creation/redemption basket information when available
-- Exchange auction documentation from NYSE and Nasdaq
+- CRSP (Morningstar) US Equity Indexes methodology, because Vanguard uses CRSP indexes for some funds
+- Fund prospectuses (Vanguard, iShares) for which index each fund tracks
 
 Key questions:
 
-- What are the index eligibility rules?
-- What are the review dates and implementation dates?
-- Are there buffers that reduce turnover?
-- How are float, shares, and liquidity measured?
-- What is announced in advance?
-- What must be inferred?
+- What are the eligibility rules, and do they apply to current members or only to new entrants?
+- What are the measurement, announcement, and effective dates?
+- Are there buffers that reduce turnover, and how wide are they?
+- How are float, shares, voting rights, and liquidity measured?
+- What is announced in advance, and what must be inferred?
+- Which clauses are exceptions that change the timing or the answer?
 
-Desk intuition: the methodology document is the rulebook. If you can translate rules into expected trades, you can add value.
+Deliverable: rebuild the S&P vs Russell comparison table from the current documents, citing a section for every row.
+
+Desk intuition: the methodology document is the rulebook. Small details, such as a band, a voting test, or a $1 billion exception, decide whether a flow can be forecast exactly, estimated, or only guessed.
 
 ## Part 12: Index Adds, Deletes, and Weight Changes
 

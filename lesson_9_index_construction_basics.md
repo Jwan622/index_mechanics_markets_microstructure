@@ -15,7 +15,7 @@ An index is a number that summarizes how a group of stocks did. It is defined by
 
 The index's return is the weighted average of its members' returns. Here is a two-stock index:
 
-| Stock | Weight | Return today | Contribution (weight × return) |
+| Stock | Weight | Return today | Contribution |
 |---|---:|---:|---:|
 | A | 75% | +2% | 0.75 × 2% = +1.5% |
 | B | 25% | −4% | 0.25 × −4% = −1.0% |
@@ -49,7 +49,7 @@ The rest of the lesson builds this step by step, but here is the punchline first
 
 Under the usual rule, a stock's weight is its **buyable value** divided by the total buyable value of all members. Buyable value is price × the number of shares that investors can actually trade. Anything that changes that number changes the weight, even when the stock price doesn't move:
 
-| Event | What happens to buyable shares | Weight | What tracking funds do |
+| Event | Buyable shares | Weight | Funds |
 |---|---|---|---|
 | Company issues new shares | more shares exist | up | buy |
 | Company buys back shares | fewer shares exist | down | sell |
@@ -183,7 +183,7 @@ It looks like a coincidence that A, B, and C all come out at 5.2%, but it isn't.
 
 A's own size has dropped out. All that's left is the fund size divided by the index total, and those two numbers are the same for every stock. Run B through the same steps and its $4.0bn cancels the same way:
 
-| Stock | Dollars in the stock | ÷ Its tradable value | = Fraction owned |
+| Stock | Dollars in | ÷ Its value | = Owned |
 |---|---:|---:|---:|
 | A | $10.0bn / $19.4bn × $1bn = $515m | $10.0bn | 5.2% |
 | B | $4.0bn / $19.4bn × $1bn = $206m | $4.0bn | 5.2% |
@@ -232,7 +232,7 @@ An **equal-weighted index** gives every member the same weight, here 33.3% each,
 
 The three schemes give very different portfolios from the same three stocks. Each one divides by a different total:
 
-| Scheme | What each stock is measured by | Total | A | B | C |
+| Scheme | Measured by | Total | A | B | C |
 |---|---|---:|---:|---:|---:|
 | Float-adjusted cap | tradable value (Step 2) | $19.4bn | 10.0 / 19.4 | 4.0 / 19.4 | 5.4 / 19.4 |
 | Total cap | all shares, no float adjustment (Step 1) | $26.0bn | 10.0 / 26.0 | 10.0 / 26.0 | 6.0 / 26.0 |
@@ -240,7 +240,7 @@ The three schemes give very different portfolios from the same three stocks. Eac
 
 Under total cap, A and B both get 38.5%, because both are $10bn companies when every share is counted. The founder's locked-up 60% of B counts here. Float adjustment removes it, which is why B drops to 20.6% in the first column.
 
-| Stock | Float-adjusted cap weight | Total cap weight | Equal weight |
+| Stock | Float cap | Total cap | Equal |
 |---|---:|---:|---:|
 | A | 51.5% | 38.5% | 33.3% |
 | B | 20.6% | 38.5% | 33.3% |
@@ -300,15 +300,15 @@ Nothing about B's business changed, and the fund has no opinion. A change in *wh
 
 Weighting only applies to members, so the membership rules matter just as much. Most index families combine several kinds of screens.
 
-A **size screen** sets how large a company must be. It can be a fixed threshold ("market cap at least $X") or a rank ("the largest 1,000 companies"). A **liquidity screen** requires enough trading that funds can buy and sell without huge cost, measured for example by shares traded per month or by annual dollar volume relative to market cap. A **float screen** excludes companies with too few shares available. **Domicile and security-type rules** decide what counts as a "US company" and exclude things like ETFs and closed-end funds. Some indexes add a **financial-viability** screen. The S&P 500, for example, requires positive reported earnings over the most recent quarter and over the trailing four quarters combined.
+A **size screen** sets how large a company must be. It can be a fixed threshold ("market cap at least $X") or a rank ("the largest 1,000 companies"). A **liquidity screen** requires enough trading that funds can buy and sell without huge cost, measured for example by shares traded per month or by annual dollar volume relative to market cap. A **float screen** excludes companies with too few shares available. **Domicile and security-type rules** decide what counts as a "US company" and exclude things like ETFs and closed-end funds. Some indexes add a **financial-viability** screen. The S&P 500, for example, requires positive reported earnings over the most recent quarter and over the trailing four quarters combined. Lesson 11 lists every S&P and Russell screen in full and applies them to example companies.
 
 The two big US families make an instructive contrast:
 
-| | S&P 500 | Russell 1000 / 2000 / 3000 |
+| | S&P 500 | Russell |
 |---|---|---|
 | **Who decides** | An index committee, applying published criteria with some discretion | Mechanical ranking by total market cap on rank day |
 | **How size is used** | Minimum thresholds | Rank cutoffs: largest 1,000, next 2,000, combined 3,000 |
-| **When changes happen** | As needed during the year, plus quarterly rebalances | At reconstitution: annually each June since 1989, moving to twice a year from December 2026 |
+| **When changes happen** | As needed during the year, plus quarterly rebalances | At reconstitution: twice a year, June and December |
 | **Weighting** | Float-adjusted market cap | Float-adjusted market cap |
 
 Note the Russell detail: stocks are *ranked* by total market cap but *weighted* by float-adjusted cap. A company with a large founder stake can rank inside the Russell 1000 by total size and still get a small weight.
@@ -352,9 +352,9 @@ Four things to read off it:
 3. **The Russell 3000E is the Russell 3000 plus ranks 3,001–4,000.** Those extra 1,000 companies are the smallest ones, in the Microcap only.
 4. **Every index has its own funds.** A company at rank 1,500 sits in the Russell 2000, the Russell 3000, the Russell 2500, and the Russell 3000E at once. Any fund tracking any of those holds it.
 
-One caveat on the boundaries: the ranks in the table are where the lines fall for *new* companies. At the 1,000 boundary (and at 200, 500, and 2,000), current members get some room through the band described in "The rebuild and the band" below. At 3,000 and 4,000 the rulebook applies no band, so those lines are hard.
+One caveat on the boundaries: the ranks in the table are where the lines fall for *new* companies. At the 1,000 boundary (and at 200, 500, and 2,000), current members get some room through a **band**, described below and in full in Lesson 11. At 3,000 and 4,000 the rulebook applies no band, so those lines are hard.
 
-So the Russell 2000 is the small-cap index. With a pure rank cutoff, every Russell 2000 company would be smaller than every Russell 1000 company. In practice the two overlap, because of a rule called the **band**, explained in "The rebuild and the band" below.
+So the Russell 2000 is the small-cap index. With a pure rank cutoff, every Russell 2000 company would be smaller than every Russell 1000 company. In practice the two overlap, because of the band (below).
 
 A tiny version: suppose there were only five eligible companies and the "large-cap" index took the top two.
 
@@ -366,105 +366,21 @@ A tiny version: suppose there were only five eligible companies and the "large-c
 | S | $10 | 2,000m | $20bn | 4 | small-cap |
 | T | $45 | 300m | $13.5bn | 5 | small-cap |
 
-If R had closed at $80 on rank day instead of $60, its cap would be $32bn. It would rank second, move into the large-cap index, and push Q down. The rank-day closing price decides membership. (This is the rule for a company that is *new* to the index. Current members near the cutoff are treated differently, as "The rebuild and the band" below explains.)
+If R had closed at $80 on rank day instead of $60, its cap would be $32bn. It would rank second, move into the large-cap index, and push Q down. The rank-day closing price decides membership. (This is the rule for a company that is *new* to the index. Current members near the cutoff are treated differently, as the next section explains.)
 
-### The important dates
+### Rebuilds and the band, in brief
 
-**Russell (2026 June reconstitution, from FTSE Russell's published schedule):**
+Two Russell rules matter for everything that follows. Lesson 11 covers both in detail, with worked companies.
 
-| Date | Event | What it means |
-|---|---|---|
-| Thu 30 Apr | **Rank day** | Total market caps are measured at the close. This is the measurement date, *not* an announcement. Nothing is published yet. |
-| Fri 22 May | **Preliminary lists** | FTSE Russell publishes the proposed additions and deletions after 6 p.m. ET. This is the first official announcement. |
-| Fri 29 May, 5 Jun, 12 Jun, Thu 18 Jun | **Updates** | Revised lists that fix data errors and reflect corporate actions such as IPOs and mergers. |
-| Mon 8 Jun | **Lock-down begins** | Membership is considered final. After this, the list is not expected to change. |
-| Fri 26 Jun | **Reconstitution day** (effective) | Index funds trade in the closing auction, and the new index applies from this close. |
-| Mon 29 Jun | **First day of the new index** | Markets open with the reconstituted indexes. |
+**The rebuild.** Russell re-ranks every company from scratch twice a year, in June and December. Each rebuild starts with **rank day**, the last business day of April or October, when market caps are measured at the close. Rank day is a measurement, *not* an announcement: FTSE Russell publishes the preliminary lists four to five weeks before the rebuild takes effect, and index funds trade at the close on the effective date (the fourth Friday of June or the second Friday of December).
 
-So, to answer the obvious question directly: Russell does *not* announce additions on the last day of April. That day is when the *measurement* happens. The first official list comes about three weeks later, and the trade happens about two months later. Until 2026 this happened once a year, in June. From 2026 there is a second rebuild each December: rank day is the last business day of October (30 October 2026), preliminary lists follow on 13 November, and the changes take effect after the close on 11 December 2026.
-
-**S&P 500:**
-
-| Timing | Event | What it means |
-|---|---|---|
-| Monthly meetings, but no scheduled reconstitution | **Committee decision** | The committee picks additions from eligible candidates, often to replace a company leaving after an acquisition. S&P's methodology says changes are made "on an as-needed basis." |
-| At least 3 business days before the effective date | **Announcement** | S&P publishes the change on its website. The methodology requires at least three business days' notice, and the committee may give less. This is the first time the market knows for sure. |
-| After the close on the third Friday of March, June, September, and December | **Quarterly rebalance** | Share counts are updated, and many membership changes are timed to take effect then. Index funds trade in that day's closing auction. |
-| Any date | **Off-cycle change** | A merger, acquisition, or bankruptcy can trigger a replacement outside the quarterly schedule. |
-
-### The rebuild and the band
-
-Two words in the Russell rules need to be pinned down: *rebuild* and *band*.
-
-**The rebuild.** FTSE Russell calls it **reconstitution**: every company is re-ranked from scratch, and every index's membership is set again. It now happens twice a year:
-
-| Rebuild | Rank day | Effective | Reviews |
-|---|---|---|---|
-| June | last business day of April | 4th Friday of June | everything |
-| December | last business day of October | 2nd Friday of December | new adds and moves between indexes |
-
-Rank day is when caps are measured, and the effective date is when index funds trade at the close. The June rebuild is the full review. The December rebuild is lighter: under the rulebook (Appendix F), it handles new additions and moves between the Russell 1000, Russell 2000, and Microcap, but it only updates float for material changes and doesn't re-check existing members' voting rights. Between rebuilds, the only membership changes are quarterly IPO additions and corporate events such as mergers.
-
-**The band.** Yes, there is one. It is in Section 6.10 of the current rulebook (version 7.2, August 2026), which says a band is placed around the market-cap breakpoint "to avoid unnecessary turnover at reconstitution." The section applies to reconstitution in general, so it covers both rebuilds.
-
-The problem it solves: a company sitting right at rank 1,000 would otherwise flip between the Russell 1000 and Russell 2000 at every rebuild, as its rank wobbled between 995 and 1,005. Each flip forces a large index trade (see "Moving *up* from the Russell 2000 can mean being *sold*" below), even though the company barely changed.
-
-The rule treats new and current members differently:
-
-- A **new** company goes by the breakpoint alone: above it means Russell 1000, below it means Russell 2000.
-- A **current** member stays in its index as long as it is inside the band around the breakpoint. It only moves if it ends up clearly past the line.
-
-Technically the band is measured in *cumulative percentile of market cap* (±2.5 points). Lesson 9a works through that measure step by step. In practice, FTSE Russell translates it into a range of market caps. Its June 2026 article gives the real numbers:
-
-| June 2026 | Total market cap |
-|---|---:|
-| Breakpoint (new companies) | $5.7bn |
-| Bottom of band | $2.7bn |
-| Top of band | $9.6bn |
-
-(For comparison, in June 2025 the breakpoint was $4.6bn and the band ran from about $2.0bn to $7.4bn.)
-
-**Applying it.** Here are six made-up companies checked against the June 2026 numbers. Read each row as a question, "is it inside $2.7bn–$9.6bn?", and then apply the rule for new or current members:
-
-| Company | Status | Total cap | Result |
-|---|---|---:|---|
-| Spruce | current R2000 | $8.0bn | inside band → **stays R2000** |
-| Larch | current R2000 | $11.0bn | above band → moves to R1000 |
-| Hazel | current R1000 | $3.0bn | inside band → **stays R1000** |
-| Rowan | current R1000 | $2.2bn | below band → moves to R2000 |
-| Yew | new | $6.0bn | above $5.7bn → enters R1000 |
-| Holly | new | $5.0bn | below $5.7bn → enters R2000 |
-
-Look at Spruce and Holly. Spruce is *bigger* ($8.0bn) but stays in the small-cap index, while Holly is *smaller* ($5.0bn) and also lands in the small-cap index. Now compare Spruce with Yew: Spruce is bigger than Yew, yet Yew goes into the Russell 1000 and Spruce doesn't. The difference is only that Spruce is a current member, protected by the band, while Yew is new and judged by the breakpoint alone.
-
-This happens at real scale. FTSE Russell's preliminary June 2026 data showed 97 Russell 2000 members ranked above the breakpoint but kept in the Russell 2000 by the band, and 111 Russell 1000 members ranked below it but kept in the Russell 1000.
-
-Two consequences matter on a desk:
-
-1. **You need the current membership list, not just the ranking.** A ranking alone would put Spruce in the Russell 1000 and Hazel in the Russell 2000. Both would be wrong.
-2. **The indexes overlap in size.** In June 2026, a Russell 2000 company could be worth up to $9.6bn while a Russell 1000 company could be worth as little as $2.7bn.
+**The band.** A *new* company is placed by the cutoff alone. A *current* member near the Russell 1000/2000 cutoff keeps its index unless it has moved clearly past the line. This stops companies near rank 1,000 from flipping back and forth, and forcing a large index trade, at every rebuild. In June 2026, new companies needed $5.7bn of total market cap to enter the Russell 1000, while current members kept their index anywhere between $2.7bn and $9.6bn. So a Russell 2000 company can be bigger than a Russell 1000 company, and predicting Russell moves needs the current membership list as well as the ranking.
 
 ### Why one is forecastable and the other isn't
 
 Russell's rule is mechanical, so it *can* be computed in advance. As soon as rank day closes, a trader with price and share-count data can sort the companies and get very close to the preliminary list, three weeks before FTSE Russell publishes it. Even before rank day, they can estimate it, with uncertainty only about how prices will move before April 30. That is why Russell flow is crowded early. Many desks are running the same sort.
 
-The S&P 500 is different. Being eligible (large enough, profitable, liquid, enough float) only makes a company a *candidate*. The committee then chooses among candidates, considering things like sector balance, and often acts only when a seat opens up. Traders can rank candidates by how likely they are to be picked, but they cannot know who is added until S&P announces. So for S&P, the main price move tends to come on the announcement. For Russell, much of it can come before the official list.
-
-### Can the S&P committee be predicted?
-
-Partly. The committee is a group of people, not a hidden algorithm. S&P's methodology says its members are full-time S&P Dow Jones Indices staff who meet monthly. They review candidates for addition, sector composition, and pending corporate actions, and "all Index Committee discussions are confidential." The published criteria screen the candidates, and the members then use judgment. Researchers have looked at how much that judgment matters. Li, Liu, and Wei (2021) find "a nontrivial amount of discretion" in S&P 500 membership. Their most striking result is that firms buying S&P credit ratings seem to have a better chance of being added, while buying Moody's ratings shows no such effect. Sharfman and Deluard (2021) point to discretionary choices with big consequences, such as excluding new dual-class companies from 2017. The current methodology no longer has that exclusion: it includes each listed share class separately. They also argue that Tesla would have qualified years before its 2020 addition under a size-only rule, although the profitability test is part of why it waited.
-
-Discretion does not mean randomness, though. A committee that makes many similar decisions leaves a pattern, and that pattern can be learned. This is a natural machine-learning problem: a classifier estimates the probability that each candidate is added next quarter. Agrawal and coauthors (2024) train a random forest on quarterly financial, market, industry, and governance data and report a test F1 score of 0.85. F1 combines how many predicted adds were right with how many real adds were caught. Useful features follow directly from how the committee works:
-
-| Feature | Why it should matter |
-|---|---|
-| Size relative to the smallest current members | A candidate has to look like it belongs |
-| Positive earnings, liquidity, float | Published eligibility screens |
-| Sector weight in the index vs the market | The committee considers sector balance |
-| Being a large member of the S&P MidCap 400 | Many additions are promotions from the MidCap |
-| Seats opening (members being acquired) | Additions often happen only when someone leaves |
-
-Three things limit how far a model can go. First, the model can rank candidates, but *timing* depends on when a seat opens, which usually comes from an unrelated merger. Second, there are only a few additions each quarter, so even a good model has to pick from a handful of close candidates, and the evaluation must use a time-based split with data as it was known at the time (Lessons 24–26). Third, everyone can build the same model. Greenwood and Sammon (2025) show that the average S&P 500 addition effect fell from about 7.4% in the 1990s to under 1% in the last decade. Two reasons they give are that changes are more anticipated and that more additions are MidCap promotions, where the buying and selling partly offset. A good forecast is now partly priced in, so the edge comes from being better calibrated or faster than the crowd, not from forecasting at all. Lesson 15 builds a rules-based version of this, and Lesson 25 adds the machine learning.
+The S&P 500 is different. Being eligible (large enough, profitable, liquid, enough float) only makes a company a *candidate*. The committee then chooses among candidates, considering things like sector balance, and often acts only when a seat opens up. Traders can rank candidates by how likely they are to be picked, but they cannot know who is added until S&P announces. So for S&P, the main price move tends to come on the announcement. For Russell, much of it can come before the official list. (Whether the committee itself can be predicted, including with machine learning, is covered in Lesson 11.)
 
 ### Other differences that matter for flow
 
@@ -511,37 +427,12 @@ In words: Z goes from being one of the biggest names in a small index (0.2% weig
 
 **Profitability only matters for the S&P 500.** The S&P 500 requires positive earnings. Russell has no such test. A large, unprofitable company can sit in the Russell 1000 for years and become an S&P 500 candidate only once it posts positive earnings. That makes earnings releases a possible trigger for S&P inclusion.
 
-| Difference | S&P 500 | Russell 1000 / 2000 |
+| Difference | S&P 500 | Russell |
 |---|---|---|
 | Moving up in size | Can lead to an add, which means buying | Crossing from the 2000 into the 1000 usually means net selling |
 | Typical liquidity of affected stocks | Large, liquid | Many small, less liquid names in the 2000 |
 | How changes arrive | A few names at a time, all year | Hundreds of names on reconstitution day |
 | Profitability test | Yes | No |
-
-### The S&P 500 entry checklist
-
-Profitability is only one of the S&P 500's screens. Here is the full list from S&P's methodology (July 2026 version). A company has to pass **all** of them to become a *candidate*. Passing them doesn't mean it gets added; the committee still chooses.
-
-| Rule | Requirement | Why it matters for flow |
-|---|---|---|
-| Domicile | US company, filing 10-Ks and 10-Qs | Foreign firms and ADRs can't get in, however big they are |
-| Listing | NYSE, Nasdaq, Cboe, NYSE Arca, NYSE American, or Texas Stock Exchange | OTC stocks are excluded |
-| Structure | Common stock of a corporation (REITs allowed) | No LPs, MLPs, LLCs, BDCs, ETFs, SPACs, ADRs, or preferred stock |
-| Size | Total market cap of **$22.7bn** or more | Set to about the 85th percentile of the US market, reviewed each quarter |
-| Float size | Float-adjusted cap at least half the size threshold ($11.35bn) | A big company with a tiny float can still fail |
-| Float share | IWF at least 0.10 | At least 10% of shares must be tradable |
-| Liquidity | Annual dollar volume ÷ float-adjusted cap of at least 0.75, and 250,000+ shares traded in each of the last 6 months | Index funds must be able to buy it without a huge cost |
-| Profitability | Positive GAAP net income in the latest quarter **and** over the last four quarters combined | An unprofitable company can't be added at any size |
-| Seasoning | Traded for at least 12 months since its IPO (or de-SPAC) | No fast track into the S&P 500 for new listings |
-| Sector balance | Considered when choosing among candidates | Two equal candidates can be decided by which sector is underweight |
-
-Three details change how the flow behaves.
-
-**The rules are for getting in, not for staying in.** The methodology says the criteria "are for addition to an index, not for continued membership." A member that falls below $22.7bn or posts a loss is not removed automatically. This is deliberate, to avoid turnover. So the S&P 500 contains companies that couldn't be added today, and deletions are much harder to predict than additions.
-
-**Promotions skip some tests.** A company moving up from the S&P MidCap 400 only has to meet the size rule. It does not need to pass the profitability, liquidity, or float-size tests again. Promotions are an easier path in, and the MidCap 400's largest members are natural candidates.
-
-**The evaluation date is just before the announcement.** Eligibility is checked at the open of trading two business days before the announcement. A company that drops below the threshold a week before a seat opens can miss its chance.
 
 ## Price Return and Total Return
 
@@ -593,17 +484,9 @@ An index is a recipe: eligibility rules choose the members, and a weighting rule
 
 **mechanical ranking**: Setting membership by sorting companies on a published measure and applying fixed cutoffs, with no discretionary choice.
 
-**preliminary list**: Russell's first published list of proposed additions and deletions, released a few weeks after rank day.
-
-**lock-down period**: The stretch before Russell reconstitution day during which membership is treated as final.
-
 **reconstitution**: A scheduled rebuild of an index's membership from scratch according to its rules. For Russell, twice a year: June (full) and December (additions and migrations).
 
 **band**: A range around an index cutoff within which current members keep their index. New companies are judged by the cutoff alone.
-
-**reconstitution day**: The day the new Russell membership takes effect, at the close. Index funds trade in that day's closing auction.
-
-**quarterly rebalance**: For the S&P 500, the scheduled update after the close on the third Friday of March, June, September, and December.
 
 **price return index**: An index calculated from prices only, ignoring dividends.
 
@@ -645,21 +528,9 @@ New Street IR. "Russell Reconstitution Now Happens Twice a Year." October 14, 20
 
 S&P Dow Jones Indices. "S&P U.S. Indices Methodology." July 2026. Eligibility Criteria (pp. 7–11), Index Construction (p. 12), Timing of Changes, and Index Committee sections. [https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf](https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf)
 
-Li, Kun, Xin (Kelly) Liu, and Shang-Jin Wei. 2021. "Is Stock Index Membership for Sale?" NBER Working Paper 29365. [https://www.nber.org/papers/w29365](https://www.nber.org/papers/w29365)
-
-Sharfman, Bernard S., and Vincent Deluard. 2021. "Discretionary Decision-Making and the S&P 500 Index." CLS Blue Sky Blog, March 30, 2021. [https://clsbluesky.law.columbia.edu/2021/03/30/discretionary-decision-making-and-the-sp-500-index/](https://clsbluesky.law.columbia.edu/2021/03/30/discretionary-decision-making-and-the-sp-500-index/)
-
-Agrawal, Vidhi, Eesha Khalid, Tianyu Tan, and Doris Xu. 2024. "Hunting Tomorrow's Leaders: Using Machine Learning to Forecast S&P 500 Additions & Removal." arXiv:2412.12539. [https://arxiv.org/abs/2412.12539](https://arxiv.org/abs/2412.12539)
-
-Greenwood, Robin, and Marco Sammon. 2025. "The Disappearing Index Effect." *Journal of Finance* 80 (2): 657-698. [https://www.nber.org/system/files/working_papers/w30748/w30748.pdf](https://www.nber.org/system/files/working_papers/w30748/w30748.pdf)
-
 Chang, Yen-Cheng, Harrison Hong, and Inessa Liskovich. 2015. "Regression Discontinuity and the Price Effects of Stock Market Indexing." *Review of Financial Studies* 28 (1): 212-246.
 
 S&P Dow Jones Indices. "Float Adjustment Methodology." [https://www.spglobal.com/spdji/en/documents/methodologies/methodology-float-adjustment.pdf](https://www.spglobal.com/spdji/en/documents/methodologies/methodology-float-adjustment.pdf)
-
-FTSE Russell (LSEG). "Four Decades of Russell Indexes Reconstitution." May 2, 2024. [https://www.lseg.com/en/ftse-russell/research/four-decades-russell-indexes-reconstitution](https://www.lseg.com/en/ftse-russell/research/four-decades-russell-indexes-reconstitution)
-
-FTSE Russell (LSEG). "FTSE Russell Announces 2026 Russell US Indexes Reconstitution Schedule." Press release, March 2, 2026. [https://lseg.com/en/media-centre/press-releases/ftse-russell/2026/russell-reconstitution-2026-schedule](https://lseg.com/en/media-centre/press-releases/ftse-russell/2026/russell-reconstitution-2026-schedule)
 
 CME Group. "Navigating the S&P 500 Rebalance: A Quarterly Market Ritual." 2025. [https://www.cmegroup.com/openmarkets/equity-index/2025/Navigating-the-S-P-500-Rebalance-A-Quarterly-Market-Ritual.html](https://www.cmegroup.com/openmarkets/equity-index/2025/Navigating-the-S-P-500-Rebalance-A-Quarterly-Market-Ritual.html)
 
